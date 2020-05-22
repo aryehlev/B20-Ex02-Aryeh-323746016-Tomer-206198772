@@ -60,14 +60,34 @@ namespace Match_game__logic
         public void ExposeCard(int i_PlayerNumber, int i_Row, char i_Column)
         {
 
-
+            m_cardExposedByPlayer = m_GameBoard[i_Row, i_Column];
+            m_cardExposedByPlayer.Exposed = true;
+            PrintGameBoard();
         }
 
         public void GuessCard(int i_PlayerNumber, int i_Row, char i_Column)
         {
+            Card cardPickedByPlayer = m_GameBoard[i_Row, i_Column];
+            if(m_cardExposedByPlayer.Letter == cardPickedByPlayer.Letter)
+            {
+                Ex02.ConsoleUtils.Screen.Clear();
+                cardPickedByPlayer.Exposed = true;
+                PrintGameBoard();
+            }
+            else
+            {
+                cardPickedByPlayer.Exposed = true;
+                Ex02.ConsoleUtils.Screen.Clear();
+                PrintGameBoard();
+                System.Threading.Thread.Sleep(2000);
+                cardPickedByPlayer.Exposed = false;
+                m_cardExposedByPlayer.Exposed = false;
+            }
 
+            
         }
 
+        //must do
         public string PrintGameBoard()
         {
             StringBuilder strToReturn = new StringBuilder();
@@ -94,7 +114,29 @@ namespace Match_game__logic
                 this._m_Exposed = false;
             }
 
-            public bool m_Exposed { get { return this._m_Exposed; } set { this._m_Exposed = value; } }
+            public bool Exposed
+            {
+                get
+                {
+                    return this._m_Exposed;
+                }
+                set
+                {
+                    this._m_Exposed = value;
+                }
+            }
+
+            public char Letter
+            {
+                get
+                {
+                    return this.m_Letter;
+                }
+                set
+                {
+                    this.m_Letter = value;
+                }
+            }
 
             public override string ToString() {
                 return $"{this.m_Letter}";
