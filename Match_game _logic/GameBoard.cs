@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Match_game__logic
 {
     class GameBoard
@@ -15,7 +10,6 @@ namespace Match_game__logic
         {
             this.m_Board = new char[i_NumOfRows, i_NumOfColumns];
             this.m_PairsExposed = 0;
-            for()
         }
 
 

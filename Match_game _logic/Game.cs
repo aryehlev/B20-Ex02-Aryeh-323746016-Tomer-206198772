@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
+using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Match_game__logic
 {
     class Game
     {
         private Card[,] m_GameBoard;
+        private Card m_cardExposedByPlayer;
         private string m_NameOfPlayer1;
         private string m_NameOfPlayer2;
         private bool m_MultiPlayerMode;
         private int m_Player1Score;
         private int m_Player2Score;
-        private Card m_
-        public Game(int i_NumberOfRows, int i_NumberOfColumns, string i_NameOfPlayer1, bool i_MultiPlayerMode, string i_NameOfPlayer2 = "Computer")
+
+        public Game(int i_NumberOfRows, int i_NumberOfColumns, bool i_MultiPlayerMode, string i_NameOfPlayer1, string i_NameOfPlayer2 = "Computer")
         {
             this.m_GameBoard = new Card[i_NumberOfRows, i_NumberOfColumns];
             this.m_Player1Score = 0;
@@ -23,18 +22,44 @@ namespace Match_game__logic
             this.m_NameOfPlayer1 = i_NameOfPlayer1;
             this.m_NameOfPlayer2 = i_NameOfPlayer2;
             this.m_MultiPlayerMode = i_MultiPlayerMode;
-            initCards();
-
+            this.m_cardExposedByPlayer = null;
+            initGameBoard();
         }
 
 
-        private void initCards()
+        private void initGameBoard()
         {
+            int numberOfPairs = (this.m_GameBoard.GetLength(0) * this.m_GameBoard.GetLength(1)) / 2;
+            char[] cardsPossibleLetters = new char[numberOfPairs * 2];
+            char nextLetter = 'A';
+            for (int i = 0; i < numberOfPairs; i++)
+            {
+                cardsPossibleLetters[i * 2] = nextLetter;
+                cardsPossibleLetters[i * 2 + 1] = nextLetter;
+                nextLetter++;
+            }
+            
+            Random rnd = new Random();
+            for (int i = cardsPossibleLetters.Length - 1; i >= 0; i--)
+            {
+                char currentLetter = cardsPossibleLetters[i];
+                int randomNumber = rnd.Next(0, i + 1);
+                cardsPossibleLetters[i] = cardsPossibleLetters[randomNumber];
+                cardsPossibleLetters[randomNumber] = currentLetter;
+            }
 
+            for (int i = 0; i < this.m_GameBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.m_GameBoard.GetLength(1); j++)
+                {
+                    this.m_GameBoard[i, j] = new Card(cardsPossibleLetters[i * this.m_GameBoard.GetLength(0) + j]);
+                }
+            }
         }
 
         public void ExposeCard(int i_PlayerNumber, int i_Row, char i_Column)
         {
+
 
         }
 
@@ -43,18 +68,37 @@ namespace Match_game__logic
 
         }
 
+        public string PrintGameBoard()
+        {
+            StringBuilder strToReturn = new StringBuilder();
+            for (int i = 0; i < this.m_GameBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.m_GameBoard.GetLength(1); j++)
+                {
+                    strToReturn.Append(this.m_GameBoard[i, j] + "\t");
+                }
+                strToReturn.Append("\n");
+            }
+            return strToReturn.ToString();
+        }
+
 
         class Card
         {
             private char m_Letter;
-            private bool m_Exposed;
+            private bool _m_Exposed;
 
-            Card(char i_Letter)
+            public Card(char i_Letter)
             {
                 this.m_Letter = i_Letter;
+                this._m_Exposed = false;
             }
 
+            public bool m_Exposed { get { return this._m_Exposed; } set { this._m_Exposed = value; } }
 
+            public override string ToString() {
+                return $"{this.m_Letter}";
+            }
         }
 
 
