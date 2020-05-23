@@ -7,7 +7,7 @@ namespace Match_game__logic
     {
         public static void Main()
         {
-            Game test = new Game(4, 4, false, "TOMER");
+            Game test = new Game(6, 6, false, "TOMER");
             Console.WriteLine(test.PrintGameBoard());
             Console.ReadLine();
         }

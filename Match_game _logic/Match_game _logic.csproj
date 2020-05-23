@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="GameBoard.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
