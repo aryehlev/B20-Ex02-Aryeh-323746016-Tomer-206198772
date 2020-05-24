@@ -40,9 +40,10 @@
     <Compile Include="UI.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Match_game _logic">
-      <HintPath>..\Match_game _logic\obj\Debug\Match_game _logic.exe</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Match_game _logic\Match_game _logic.csproj">
+      <Project>{a37b9ab1-689d-4c05-96e9-ce3fa4968fe1}</Project>
+      <Name>Match_game _logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

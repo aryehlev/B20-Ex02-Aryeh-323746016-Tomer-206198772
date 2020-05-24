@@ -6,9 +6,7 @@ namespace Match_game__logic
 {
     public class Game
     {
-        private Card[,] m_GameBoard;
-        private int m_numberOfUnexposedPairs;
-        private Card m_cardExposedByPlayer;
+        private GameBoard m_GameBoard;
         private Player m_player1;
         private Player m_player2;
         private bool m_MultiPlayerMode;
@@ -20,62 +18,23 @@ namespace Match_game__logic
             string i_NameOfPlayer1,
             string i_NameOfPlayer2 = "Computer")
         {
-            this.m_GameBoard = new Card[i_NumberOfRows, i_NumberOfColumns];
-            this.m_numberOfUnexposedPairs = 0;
+            this.m_GameBoard = new GameBoard(i_NumberOfRows, i_NumberOfColumns);
             this.m_player1 = new Player(i_NameOfPlayer1, false, true);
             this.m_player2 = new Player(i_NameOfPlayer2, i_MultiPlayerMode, false);
             this.m_MultiPlayerMode = i_MultiPlayerMode;
-            this.m_cardExposedByPlayer = null;
-            this.initGameBoard();
+            this.m_GameBoard.PrintGameBoard();
         }
 
-
-        private void initGameBoard()
+        public void FirstMove(int i_Row, int i_Column)
         {
-            int numberOfPairs = (this.m_GameBoard.GetLength(0) * this.m_GameBoard.GetLength(1)) / 2;
-            char[] cardsPossibleLetters = new char[numberOfPairs * 2];
-            char nextLetter = 'A';
-            for(int i = 0; i < numberOfPairs; i++)
-            {
-                cardsPossibleLetters[i * 2] = nextLetter;
-                cardsPossibleLetters[i * 2 + 1] = nextLetter;
-                nextLetter++;
-            }
-
-            Random rnd = new Random();
-            for(int i = cardsPossibleLetters.Length - 1; i >= 0; i--)
-            {
-                char currentLetter = cardsPossibleLetters[i];
-                int randomNumber = rnd.Next(0, i + 1);
-                cardsPossibleLetters[i] = cardsPossibleLetters[randomNumber];
-                cardsPossibleLetters[randomNumber] = currentLetter;
-            }
-
-            for(int i = 0; i < this.m_GameBoard.GetLength(0); i++)
-            {
-                for(int j = 0; j < this.m_GameBoard.GetLength(1); j++)
-                {
-                    this.m_GameBoard[i, j] = new Card(cardsPossibleLetters[i * this.m_GameBoard.GetLength(0) + j]);
-                }
-            }
+            this.m_GameBoard.ExposeCard(i_Row, i_Column);
+            this.m_GameBoard.PrintGameBoard();
         }
 
-        public void ExposeCard(int i_Row, char i_Column)
+        public void SecondMove(int i_Row, int i_Column)
         {
-            m_cardExposedByPlayer = m_GameBoard[i_Row, i_Column];
-            m_cardExposedByPlayer.Exposed = true;
-            this.PrintGameBoard();
-        }
-
-        public void GuessCard(int i_Row, char i_Column)
-        {
-            Card cardPickedByPlayer = m_GameBoard[i_Row, i_Column];
-            if(m_cardExposedByPlayer.Letter == cardPickedByPlayer.Letter)
+            if(this.m_GameBoard.GuessCard(i_Row, i_Column))
             {
-
-                cardPickedByPlayer.Exposed = true;
-                m_numberOfUnexposedPairs += 2;
-                this.PrintGameBoard();
                 if(m_player1.IsMyTurn)
                 {
                     this.m_player1.PlayerScore++;
@@ -87,11 +46,6 @@ namespace Match_game__logic
             }
             else
             {
-                cardPickedByPlayer.Exposed = true;
-                this.PrintGameBoard();
-                System.Threading.Thread.Sleep(2000);
-                cardPickedByPlayer.Exposed = false;
-                m_cardExposedByPlayer.Exposed = false;
                 this.m_player1.IsMyTurn = !this.m_player1.IsMyTurn;
                 this.m_player2.IsMyTurn = !this.m_player2.IsMyTurn;
             }
@@ -99,8 +53,25 @@ namespace Match_game__logic
 
         public bool IsGameOver()
         {
-            return this.m_numberOfUnexposedPairs == m_GameBoard.Length / 2;
+            return this.m_GameBoard.IsBoardFullyExposed();
         }
+
+        public bool IsCardExposed(int i_row, int i_column)
+        {
+            return this.m_GameBoard.IsCardExposed(i_row, i_column);
+        }
+
+
+        public int GetLengthOfBoard()
+        {
+            return this.m_GameBoard.GetLengthOfBoard();
+        }
+
+        public int GetHeightOfBoard()
+        {
+            return this.m_GameBoard.GetHeightOfBoard();
+        }
+
 
         public Player Player1
         {
@@ -130,108 +101,7 @@ namespace Match_game__logic
         {
             return Player1.IsMyTurn ? Player1 : Player2;
         }
-        
 
-        public bool IsCardExposed(int row, char column)
-        {
-            return m_GameBoard[row, column].Exposed;
-        }
-
-        public int GetLengthOfBoard()
-        {
-            return this.m_GameBoard.GetLength(1);
-        }
-
-        public int GetHeightOfBoard()
-        {
-            return this.m_GameBoard.GetLength(0);
-        }
-
-        public string PrintGameBoard()
-        {
-            Ex02.ConsoleUtils.Screen.Clear();
-            int heightOfBoard = this.GetHeightOfBoard();
-            int lenghtOfBoard = this.GetLengthOfBoard();
-            StringBuilder strToReturn = new StringBuilder(" ");
-            char columnIndexChar = 'A';
-            for(int i = 0; i < lenghtOfBoard; i++)
-            {
-                strToReturn.Append($"     {columnIndexChar}");
-                columnIndexChar++;
-            }
-
-            strToReturn.Append(getSeperationRow(lenghtOfBoard));
-            for(int i = 0; i < heightOfBoard; i++)
-            {
-                strToReturn.Append($" {i + 1} |");
-                for(int j = 0; j < this.m_GameBoard.GetLength(1); j++)
-                {
-                    if(this.m_GameBoard[i, j].Exposed)
-                    {
-                        strToReturn.Append($"  {this.m_GameBoard[i, j].Letter}  |");
-                    }
-                    else
-                    {
-                        strToReturn.Append($"     |");
-                    }
-                }
-
-                strToReturn.Append(getSeperationRow(lenghtOfBoard));
-            }
-
-            return strToReturn.ToString();
-        }
-
-        private static string getSeperationRow(int columnsNumber)
-        {
-            StringBuilder strToReturn = new StringBuilder();
-            strToReturn.Append("\n    ");
-            strToReturn.Append('=', columnsNumber * 6);
-            strToReturn.Append("\n");
-            return strToReturn.ToString();
-        }
-
-
-        class Card
-        {
-            private char m_Letter;
-            private bool m_Exposed;
-
-            public Card(char i_Letter)
-            {
-                this.m_Letter = i_Letter;
-                this.m_Exposed = false;
-            }
-
-            public bool Exposed
-            {
-                get
-                {
-                    return this.m_Exposed;
-                }
-                set
-                {
-                    this.m_Exposed = value;
-                }
-            }
-
-            public char Letter
-            {
-                get
-                {
-                    return this.m_Letter;
-                }
-                set
-                {
-                    this.m_Letter = value;
-                }
-            }
-
-            public override string ToString()
-            {
-                return $"{this.m_Letter}";
-            }
-        }
     }
 
 }

@@ -40,22 +40,34 @@ namespace Match_game_UI
             string inputFromUser = Console.ReadLine();
             while(true)
             {
-                
                 if(inputFromUser != null && inputFromUser.Length == 2)
                 {
-                    int row = inputFromUser[1] - '0';
-                    int column = inputFromUser[0] - 'A' - '0';
+                    int row = inputFromUser[1] - '0' - 1;
+                    int column = inputFromUser[0] - 'A';
                     int lengthOfBoard = i_CurrGame.GetLengthOfBoard();
                     int heightOfBoard = i_CurrGame.GetHeightOfBoard();
-                    bool isCardExposed = i_CurrGame.IsCardExposed(row, inputFromUser[0]);
-                    if(CheckCoordanites(inputFromUser, row, column, lengthOfBoard, heightOfBoard, isCardExposed))
+                    if (column >= lengthOfBoard || column < 0)
+                    {
+                        Console.WriteLine($"{(char)('A' + column)} does not fit in board paramaters");
+                    }
+                    else if (row >= heightOfBoard || row < 0)
+                    {
+                        Console.WriteLine($"{row + 1} does not fit in board paramaters");
+                    }
+                    else if (i_CurrGame.IsCardExposed(row, column))
+                    {
+                        Console.WriteLine("The card you picked is already exposed");
+                    }
+                    else
+                    {
                         break;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("you need to put in 2 coordinates");
-                    inputFromUser = Console.ReadLine();
+                    Console.WriteLine("you need to put in 2 coordinates, for example 'A1'");
                 }
+                inputFromUser = Console.ReadLine();
             }
 
             return inputFromUser;
