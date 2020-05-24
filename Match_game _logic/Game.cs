@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Match_game__logic
 {
-    class Game
+    public class Game
     {
         private Card[,] m_GameBoard;
         private int m_numberOfUnexposedPairs;
@@ -62,16 +62,16 @@ namespace Match_game__logic
             this.PrintGameBoard();
         }
 
-        public void GuessCard(int i_PlayerNumber, int i_Row, char i_Column)
+        public void GuessCard(int i_Row, char i_Column)
         {
             Card cardPickedByPlayer = m_GameBoard[i_Row, i_Column];
             if(m_cardExposedByPlayer.Letter == cardPickedByPlayer.Letter)
             {
-                // Ex02.ConsoleUtils.Screen.Clear();
+               
                 cardPickedByPlayer.Exposed = true;
-                m_numberOfUnexposedPairs -= 2;
+                m_numberOfUnexposedPairs += 2;
                 this.PrintGameBoard();
-                if (i_PlayerNumber == 1)
+                if (m_player1.IsMyTurn)
                 {
                     this.m_player1.PlayerScore++;
                 } else
@@ -82,7 +82,6 @@ namespace Match_game__logic
             else
             {
                 cardPickedByPlayer.Exposed = true;
-                // Ex02.ConsoleUtils.Screen.Clear();
                 this.PrintGameBoard();
                 System.Threading.Thread.Sleep(2000);
                 cardPickedByPlayer.Exposed = false;
@@ -92,11 +91,12 @@ namespace Match_game__logic
 
         public bool IsGameOver()
         {
-            return this.m_numberOfUnexposedPairs == 0;
+            return this.m_numberOfUnexposedPairs == m_GameBoard.Length;
         }
 
         public string PrintGameBoard()
         {
+            Ex02.ConsoleUtils.Screen.Clear();
             int rowsNumber = this.m_GameBoard.GetLength(0);
             int columnsNumber = this.m_GameBoard.GetLength(1);
             StringBuilder strToReturn = new StringBuilder(" ");
@@ -112,7 +112,14 @@ namespace Match_game__logic
                 strToReturn.Append($" {i + 1} |");
                 for (int j = 0; j < this.m_GameBoard.GetLength(1); j++)
                 {
-                    strToReturn.Append($"  {this.m_GameBoard[i, j]}  |");
+                    if(this.m_GameBoard[i, j].Exposed)
+                    {
+                        strToReturn.Append($"  {this.m_GameBoard[i, j].Letter}  |");
+                    }
+                    else
+                    {
+                        strToReturn.Append($"     |"); 
+                    }
                 }
                 strToReturn.Append(getSeperationRow(columnsNumber));
             }
