@@ -9,22 +9,23 @@ namespace Match_game_UI
 {
     class UI
     {
-        static void Main()
+        public static void Main()
         {
             Console.WriteLine("Hi, welcome to the Matching game!\npress 1 if you would like to play against the Computer and 2 if you would like to play two players");
 
-            bool multiplayer = CheckInputFromUser.checkMultiPlayer();
+            bool multiplayer = CheckInputFromUser.CheckMultiPlayer();
+            Console.WriteLine(multiplayer);
             int heightOfBoard = 0;
             int lenOfBoard = 0;
             Console.WriteLine("please enter desired Length of board either 4, or 6");
-            lenOfBoard = CheckInputFromUser.checkLengthOrHeight();
-
+            lenOfBoard = CheckInputFromUser.CheckLengthOrHeight();
+            Console.WriteLine("lengthOfBoard =" + lenOfBoard);
             Console.WriteLine("please enter desired Height of board either 4, or 6");
-            heightOfBoard = CheckInputFromUser.checkLengthOrHeight();
-
+            heightOfBoard = CheckInputFromUser.CheckLengthOrHeight();
+            Console.WriteLine("heightOfBoard =" + heightOfBoard);
             Console.WriteLine("please enter your player name");
             string player1Name = Console.ReadLine();
-            string player2Name = "Computer";3
+            string player2Name = "Computer";
             if (multiplayer)
             {
                 Console.WriteLine("please enter your second player name");
@@ -33,11 +34,22 @@ namespace Match_game_UI
 
             Game newGame = new Game(heightOfBoard, lenOfBoard, multiplayer, player1Name, player2Name);
             startGame(newGame);
+           
 
         }
 
         static void startGame(Game playGame)
         {
+            string coordinates = "";
+            while(!playGame.IsGameOver())
+            {
+                    Console.WriteLine($"{playGame.WhosTurnIsIt().PlayerName} please choose next coordinates");
+                    coordinates = CheckInputFromUser.CheckCoordanitesInput(playGame);
+                    playGame.ExposeCard(coordinates[1] - '0', coordinates[0]);
+                    Console.WriteLine($"{playGame.WhosTurnIsIt().PlayerName} please choose second coordinates");
+                    coordinates = CheckInputFromUser.CheckCoordanitesInput(playGame);
+                    playGame.GuessCard(coordinates[1] - '0', coordinates[0]);
+            }
 
         }
     }
