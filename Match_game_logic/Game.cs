@@ -12,7 +12,6 @@ namespace Match_game_logic
         private Player m_player2;
         private MultiplayerModes m_MultiPlayerMode;
 
-
         public Game(
             int i_NumberOfRows,
             int i_NumberOfColumns,
@@ -27,16 +26,14 @@ namespace Match_game_logic
             this.m_MultiPlayerMode = i_MultiPlayerMode;
         }
 
-
-
-        public void FirstMove(BoardCoordinates i_boardCoordinates)
+        public void ExposeCard(BoardCoordinates i_boardCoordinates)
         {
             this.m_GameBoard.ExposeCard(i_boardCoordinates);
         }
 
-        public bool SecondMove(BoardCoordinates i_boardCoordinates, out Card o_SecondGuessedCard)
+        public bool GuessCardAndUpdateScores(BoardCoordinates i_boardCoordinates)
         {
-            bool wasSuccsesfulGuess = this.m_GameBoard.GuessCard(i_boardCoordinates, out o_SecondGuessedCard);
+            bool wasSuccsesfulGuess = this.m_GameBoard.GuessCard(i_boardCoordinates);
             if (wasSuccsesfulGuess)
             {
                 if(m_player1.IsMyTurn)
@@ -58,18 +55,61 @@ namespace Match_game_logic
         }
 
 
-        public bool IsGameOver()
+        public bool IsGameOver(out Player o_WinningPlayer, out Player o_LosingPlayer)
         {
-            return this.m_GameBoard.IsBoardFullyExposed();
+            bool isGameOver = false;
+            o_WinningPlayer = null;
+            o_LosingPlayer = null;
+            if (this.m_GameBoard.IsBoardFullyExposed())
+            {
+                isGameOver = true;
+                o_WinningPlayer = null;
+                o_LosingPlayer = null;
+                if (Player1.Score > Player2.Score)
+                {
+                    o_WinningPlayer = Player1;
+                    o_LosingPlayer = Player2;
+                }
+                else if (Player1.Score < Player2.Score)
+                {
+                    o_WinningPlayer = Player2;
+                    o_LosingPlayer = Player1;
+                }
+            }
+            return isGameOver;
         }
 
-        public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
+        public bool IsCardAlreadyExposed(BoardCoordinates i_boardCoordinates)
         {
             return this.m_GameBoard.IsCardExposed(i_boardCoordinates);
         }
+
         public MultiplayerModes GetMultiPlayer()
         {
             return this.m_MultiPlayerMode;
+        }
+
+        public Player WhosTurnIsIt()
+        {
+            return Player1.IsMyTurn ? Player1 : Player2;
+        }
+
+        public Player WhichPlayerWon(out Player o_LoosingPlayer, out bool o_WasTie)
+        {
+            o_WasTie = Player1.Score == Player2.Score;
+            Player winningPlayer = null;
+            if (Player1.Score >= Player2.Score)
+            {
+                winningPlayer = Player1;
+                o_LoosingPlayer = Player2;
+            }
+            else
+            {
+                winningPlayer = Player2;
+                o_LoosingPlayer = Player1;
+            }
+
+            return winningPlayer;
         }
 
         public Player Player1
@@ -103,30 +143,6 @@ namespace Match_game_logic
                 return this.m_GameBoard;
             }
         }
-
-        public Player WhosTurnIsIt()
-        {
-            return Player1.IsMyTurn ? Player1 : Player2;
-        }
-
-        public Player WhichPlayerWon(out Player o_LoosingPlayer, out bool o_WasTie)
-        {
-            o_WasTie = Player1.Score == Player2.Score;
-            Player winningPlayer = null;
-            if(Player1.Score >= Player2.Score)
-            {
-                winningPlayer = Player1;
-                o_LoosingPlayer = Player2;
-            }
-            else
-            {
-                winningPlayer = Player2;
-                o_LoosingPlayer = Player1;
-            }
-
-            return winningPlayer;
-        }
-
     }
 
 }

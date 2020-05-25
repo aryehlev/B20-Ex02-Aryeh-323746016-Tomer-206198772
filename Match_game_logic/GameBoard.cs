@@ -7,12 +7,12 @@ namespace Match_game_logic
     {
         private Card[,] m_GameBoard;
         private int m_numberOfExposedPairs;
-        private Card m_cardExposedByPlayer;
+        private Card m_cardTemporaryExposedByPlayer;
 
         public GameBoard(int i_NumberOfRows, int i_NumberOfColumns)
         {
             this.m_numberOfExposedPairs = 0;
-            this.m_cardExposedByPlayer = null;
+            this.m_cardTemporaryExposedByPlayer = null;
             this.m_GameBoard = new Card[i_NumberOfRows, i_NumberOfColumns];
             initGameBoard();
         }
@@ -33,11 +33,11 @@ namespace Match_game_logic
         {
             get
             {
-                return this.m_cardExposedByPlayer;
+                return this.m_cardTemporaryExposedByPlayer;
             }
             set
             {
-                this.m_cardExposedByPlayer = value;
+                this.m_cardTemporaryExposedByPlayer = value;
             }
         }
 
@@ -75,32 +75,29 @@ namespace Match_game_logic
         }
         public void ExposeCard(BoardCoordinates i_boardCoordinates)
         { 
-            this.m_cardExposedByPlayer = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
-            this.m_cardExposedByPlayer.Exposed = true;
+            this.m_cardTemporaryExposedByPlayer = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
+            this.m_cardTemporaryExposedByPlayer.Exposed = true;
         }
 
-        public bool GuessCard(BoardCoordinates i_boardCoordinates, out Card o_SecondGuessedCard)
+        public bool GuessCard(BoardCoordinates i_boardCoordinates)
         {
             bool guessWasCorrect = false;
-            o_SecondGuessedCard = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
-            if (m_cardExposedByPlayer.Letter == o_SecondGuessedCard.Letter)
+            Card guessedCard = this.GetCardByCoordinates(i_boardCoordinates);
+            if (m_cardTemporaryExposedByPlayer.Letter == guessedCard.Letter)
             {
-                o_SecondGuessedCard.Exposed = true;
+                guessedCard.Exposed = true;
                 m_numberOfExposedPairs += 1;
                 guessWasCorrect = true;
-            }
-            else
-            {
-                o_SecondGuessedCard.Exposed = true;
             }
 
             return guessWasCorrect;
         }
 
-        public void ReturnToPassedBoardAfterBadGuess(Card i_SecondGuessedCard)
+        public void EraseLastMoveFromBoard(BoardCoordinates i_GuessedCardCoordinates)
         {
-            i_SecondGuessedCard.Exposed = false;
-            this.m_cardExposedByPlayer.Exposed = false;
+            Card wronglyGueesedCard = this.GetCardByCoordinates(i_GuessedCardCoordinates);
+            wronglyGueesedCard.Exposed = false;
+            this.m_cardTemporaryExposedByPlayer.Exposed = false;
         }
 
         public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
@@ -131,15 +128,6 @@ namespace Match_game_logic
         public Card[,] GetGameBoard()
         {
             return this.m_GameBoard;
-        }
-
-        private static string getSeperationRow(int i_columnsNumber)
-        {
-            StringBuilder strToReturn = new StringBuilder();
-            strToReturn.Append("\n    ");
-            strToReturn.Append('=', i_columnsNumber * 6);
-            strToReturn.Append("\n");
-            return strToReturn.ToString();
         }
     }
 

@@ -111,7 +111,7 @@ namespace Match_game_UI
                     {
                         Console.WriteLine($"{row + 1} does not fit in board paramaters");
                     }
-                    else if(i_CurrGame.IsCardExposed(coordinatesFromUser))
+                    else if(i_CurrGame.IsCardAlreadyExposed(coordinatesFromUser))
                     {
                         Console.WriteLine("The card you picked is already exposed");
                     }
