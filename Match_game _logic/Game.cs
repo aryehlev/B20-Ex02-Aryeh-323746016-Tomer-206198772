@@ -25,15 +25,15 @@ namespace Match_game__logic
 
 
 
-        public void FirstMove(int i_Row, int i_Column)
+        public void FirstMove(BoardCoordinates i_boardCoordinates)
         {
-            this.m_GameBoard.ExposeCard(i_Row, i_Column);
+            this.m_GameBoard.ExposeCard(i_boardCoordinates.Row, i_boardCoordinates.Column);
             this.m_GameBoard.PrintGameBoard();
         }
 
-        public void SecondMove(int i_Row, int i_Column)
+        public void SecondMove(BoardCoordinates i_boardCoordinates)
         {
-            if(this.m_GameBoard.GuessCard(i_Row, i_Column))
+            if(this.m_GameBoard.GuessCard(i_boardCoordinates.Row, i_boardCoordinates.Column))
             {
                 if(m_player1.IsMyTurn)
                 {
@@ -98,6 +98,14 @@ namespace Match_game__logic
             set
             {
                 this.m_player2 = value;
+            }
+        }
+
+        public GameBoard GameBoard
+        {
+            get
+            {
+                return this.m_GameBoard;
             }
         }
 

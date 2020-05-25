@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Match_game__logic
 {
-    class GameBoard
+    public class GameBoard
     {
         private Card[,] m_GameBoard;
         private int m_numberOfExposedPairs;

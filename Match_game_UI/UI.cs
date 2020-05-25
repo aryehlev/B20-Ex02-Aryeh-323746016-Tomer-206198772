@@ -7,31 +7,33 @@ namespace Match_game_UI
     {
         public static void Main()
         {
-            Console.WriteLine("Hi, welcome to the Matching game!\npress 1 if you would like to play against the Computer and 2 if you would like to play two players");
+            Game newGame = createGame();
+            startGame(newGame);
+        }
 
+        static Game createGame()
+        {
+            Console.WriteLine("Hi, welcome to the Matching game!\npress 1 if you would like to play against the Computer and 2 if you would like to play two players");
             bool multiplayer = CheckInputFromUser.CheckMultiPlayer();
-            int heightOfBoard = 0;
-            int lenOfBoard = 0;
             Console.WriteLine("please enter desired Length of board either 4, or 6");
-            lenOfBoard = CheckInputFromUser.CheckLengthOrHeight();
+            int lenOfBoard = CheckInputFromUser.CheckLengthOrHeight();
             Console.WriteLine("please enter desired Height of board either 4, or 6");
-            heightOfBoard = CheckInputFromUser.CheckLengthOrHeight();
+            int heightOfBoard = CheckInputFromUser.CheckLengthOrHeight();
             Console.WriteLine("please enter player one name");
             string player1Name = Console.ReadLine();
             string player2Name = "Computer";
             if (multiplayer)
             {
-                Console.WriteLine("please enter your second player name");
+                Console.WriteLine("please enter second player name");
                 player2Name = Console.ReadLine();
             }
 
-            Game newGame = new Game(heightOfBoard, lenOfBoard, multiplayer, player1Name, player2Name);
-            startGame(newGame);
+            return new Game(heightOfBoard, lenOfBoard, multiplayer, player1Name, player2Name);
         }
 
         static void startGame(Game playGame)
         {
-            string coordinates = "";
+            BoardCoordinates coordinates = "";
             while(!playGame.IsGameOver())
             {
                 Player currentPlayer = playGame.WhosTurnIsIt();
@@ -39,10 +41,10 @@ namespace Match_game_UI
                 {
                     Console.WriteLine($"{currentPlayer.Name}, please choose next coordinates");
                     coordinates = CheckInputFromUser.CheckCoordanitesInput(playGame);
-                    playGame.FirstMove(coordinates[1] - '0' - 1, coordinates[0] - 'A');
+                    playGame.FirstMove(coordinates);
                     Console.WriteLine($"{playGame.WhosTurnIsIt().Name}, please choose second coordinates");
                     coordinates = CheckInputFromUser.CheckCoordanitesInput(playGame);
-                    playGame.SecondMove(coordinates[1] - '0' - 1, coordinates[0] - 'A');
+                    playGame.SecondMove(coordinates);
                 }
                 else
                 {

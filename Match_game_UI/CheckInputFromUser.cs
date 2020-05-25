@@ -30,28 +30,29 @@ namespace Match_game_UI
             return int.Parse(inputFromUserStr);
         }
 
-        internal static string CheckCoordanitesInput(Game i_CurrGame)
+        internal static BoardCoordinates CheckCoordanitesInput(Game i_CurrGame)
         {
             string inputFromUser = Console.ReadLine();
-            while(true)
+            BoardCoordinates coordinatesFromUser = BoardCoordinates.ParsePlacement(inputFromUser);
+            while (true)
             {
-                if(inputFromUser == "Q")
+                if (inputFromUser == "Q")
                 {
                     Console.WriteLine("\nSee you next time!");
                     System.Threading.Thread.Sleep(2000);
                     Environment.Exit(0);
                 }
-                if(inputFromUser != null && inputFromUser.Length == 2)
+                if(inputFromUser != null && inputFromUser.Length == 2 && coordinatesFromUser.Row != -1)
                 {
-                    int row = inputFromUser[1] - '0' - 1;
-                    int column = inputFromUser[0] - 'A';
+                    int row = coordinatesFromUser.Row;
+                    int column = coordinatesFromUser.Column;
                     int lengthOfBoard = i_CurrGame.GetLengthOfBoard();
                     int heightOfBoard = i_CurrGame.GetHeightOfBoard();
-                    if(column >= lengthOfBoard || column < 0)
+                    if(column >= lengthOfBoard)
                     {
                         Console.WriteLine($"{(char)('A' + column)} does not fit in board paramaters");
                     }
-                    else if(row >= heightOfBoard || row < 0)
+                    else if(row >= heightOfBoard)
                     {
                         Console.WriteLine($"{row + 1} does not fit in board paramaters");
                     }
@@ -70,9 +71,10 @@ namespace Match_game_UI
                 }
 
                 inputFromUser = Console.ReadLine();
+                coordinatesFromUser = BoardCoordinates.ParsePlacement(inputFromUser);
             }
 
-            return inputFromUser;
+            return coordinatesFromUser;
         }
 
         internal static bool CheckIfWantRematch()
