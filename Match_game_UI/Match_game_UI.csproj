@@ -42,16 +42,16 @@
     <Compile Include="UI.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Match_game _logic\Match_game _logic.csproj">
-      <Project>{a37b9ab1-689d-4c05-96e9-ce3fa4968fe1}</Project>
-      <Name>Match_game _logic</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Ex02.ConsoleUtils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Temp\Ex02.ConsoleUtils.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Match_game_logic\Match_game_logic.csproj">
+      <Project>{8e9b372b-1075-4307-956d-2fedc8945f34}</Project>
+      <Name>Match_game_logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

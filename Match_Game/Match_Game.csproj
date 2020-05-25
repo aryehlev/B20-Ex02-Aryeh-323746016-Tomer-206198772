@@ -39,9 +39,9 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Match_game _logic\Match_game _logic.csproj">
-      <Project>{a37b9ab1-689d-4c05-96e9-ce3fa4968fe1}</Project>
-      <Name>Match_game _logic</Name>
+    <ProjectReference Include="..\Match_game_logic\Match_game_logic.csproj">
+      <Project>{8e9b372b-1075-4307-956d-2fedc8945f34}</Project>
+      <Name>Match_game_logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Match_game_UI\Match_game_UI.csproj">
       <Project>{c51f58ab-fdf5-4c1b-b08d-fdb994f058a1}</Project>

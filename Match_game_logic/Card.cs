@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Match_game_logic
+﻿namespace Match_game_logic
 {
     public class Card
     {

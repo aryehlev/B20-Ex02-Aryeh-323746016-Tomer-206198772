@@ -77,12 +77,12 @@ namespace Match_game_logic
                     if (firstChoiceCard.Letter == cardFromMemory.Letter)
                     {
                         // There's a match
-                        this.m_Memory.Remove(cardFromMemory);
                         secondChoiceCard = cardFromMemory;
                     }
 
                     cardsCheckedForMatch++;
                 }
+                this.m_Memory.Remove(secondChoiceCard);
 
             }
 

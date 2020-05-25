@@ -1,5 +1,8 @@
 ﻿
 
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+
 namespace Match_game_logic
 {
     public class Game
@@ -22,7 +25,6 @@ namespace Match_game_logic
             this.m_player1 = new Player(i_NameOfPlayer1, false, true);
             this.m_player2 = new Player(i_NameOfPlayer2, i_MultiPlayerMode != MultiplayerModes.off, false);
             this.m_MultiPlayerMode = i_MultiPlayerMode;
-            this.m_GameBoard.PrintGameBoard();
         }
 
 
@@ -30,8 +32,6 @@ namespace Match_game_logic
         public void FirstMove(BoardCoordinates i_boardCoordinates)
         {
             this.m_GameBoard.ExposeCard(i_boardCoordinates);
-            this.m_GameBoard.PrintGameBoard();
-         
         }
 
         public bool SecondMove(BoardCoordinates i_boardCoordinates, out Card o_SecondGuessedCard)

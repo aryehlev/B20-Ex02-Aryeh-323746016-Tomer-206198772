@@ -133,41 +133,6 @@ namespace Match_game_logic
             return this.m_GameBoard;
         }
 
-        public void PrintGameBoard()
-        {
-            Ex02.ConsoleUtils.Screen.Clear();
-            int heightOfBoard = this.GetHeightOfBoard();
-            int lenghtOfBoard = this.GetLengthOfBoard();
-            StringBuilder strToReturn = new StringBuilder(" ");
-            char columnIndexChar = 'A';
-            for (int i = 0; i < lenghtOfBoard; i++)
-            {
-                strToReturn.Append($"     {columnIndexChar}");
-                columnIndexChar++;
-            }
-
-            strToReturn.Append(getSeperationRow(lenghtOfBoard));
-            for (int i = 0; i < heightOfBoard; i++)
-            {
-                strToReturn.Append($" {i + 1} |");
-                for (int j = 0; j < this.m_GameBoard.GetLength(1); j++)
-                {
-                    if (this.m_GameBoard[i, j].Exposed)
-                    {
-                        strToReturn.Append($"  {this.m_GameBoard[i, j].Letter}  |");
-                    }
-                    else
-                    {
-                        strToReturn.Append($"     |");
-                    }
-                }
-
-                strToReturn.Append(getSeperationRow(lenghtOfBoard));
-            }
-
-            Console.Out.WriteLine(strToReturn);
-        }
-
         private static string getSeperationRow(int i_columnsNumber)
         {
             StringBuilder strToReturn = new StringBuilder();

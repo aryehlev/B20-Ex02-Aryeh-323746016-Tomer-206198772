@@ -27,10 +27,13 @@ namespace Match_game
             }
 
             return new Game(heightOfBoard, lenOfBoard, multiplayerMode, player1Name, player2Name);
+            
         }
 
         static void startGame(Game playGame)
         {
+            AI computerAI = new AI(playGame.GetMultiPlayer());
+            UI.ShowGameBoard(playGame.GameBoard);
             while (!playGame.IsGameOver())
             {
                 Player currentPlayer = playGame.WhosTurnIsIt();  // player that is now playing
@@ -39,7 +42,6 @@ namespace Match_game
                 Card secondCard;
                 bool wasGoodGuess = true;
 
-                AI computerAI = new AI(playGame.GetMultiPlayer());
                 if (!currentPlayer.IsComputer)
                 {
                     nextMovesCoordinates[0] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer.Name);
@@ -53,6 +55,7 @@ namespace Match_game
                     UI.ShowComputerIsPlaying();
                     nextMovesCoordinates = computerAI.GetCoordinatesForNextMove(playGame.GameBoard);
                     playGame.FirstMove(nextMovesCoordinates[0]);
+                    UI.ShowGameBoard(playGame.GameBoard);
                 }
                 computerAI.SaveToMemory(playGame.GameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
                 wasGoodGuess = playGame.SecondMove(nextMovesCoordinates[1], out secondCard);

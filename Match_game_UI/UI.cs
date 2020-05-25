@@ -137,9 +137,13 @@ namespace Match_game_UI
             {
                 Console.WriteLine("Good Game! It was a tie this time...");
             }
-            else
+            else if(!winningPlayer.IsComputer)
             {
                 Console.WriteLine($"Congratulations Player {winningPlayer.Name}! You won with {winningPlayer.Score} pairs, {losingPlayer.Name} you got {losingPlayer.Score} pairs right");
+            }
+            else
+            {
+                Console.Out.WriteLine("you lose! sorry :(");
             }
             Console.WriteLine("Rematch? (Y / N)");
             string inputFromUser = Console.ReadLine();

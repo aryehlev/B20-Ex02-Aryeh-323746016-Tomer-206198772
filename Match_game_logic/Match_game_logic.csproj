@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A37B9AB1-689D-4C05-96E9-CE3FA4968FE1}</ProjectGuid>
+    <ProjectGuid>{8E9B372B-1075-4307-956D-2FEDC8945F34}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Match_game__logic</RootNamespace>
-    <AssemblyName>Match_game _logic</AssemblyName>
+    <RootNamespace>Match_game_logic</RootNamespace>
+    <AssemblyName>Match_game_logic</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,14 +42,9 @@
     <Compile Include="AI.cs" />
     <Compile Include="BoardCoordinates.cs" />
     <Compile Include="Card.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="GameBoard.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Game.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Ex02.ConsoleUtils">
-      <HintPath>..\..\..\..\..\..\..\Temp\Ex02.ConsoleUtils.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
