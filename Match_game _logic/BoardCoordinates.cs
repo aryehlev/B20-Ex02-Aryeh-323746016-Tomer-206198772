@@ -46,5 +46,6 @@ namespace Match_game__logic
                 this.m_Column = value;
             }
         }
+
     }
 }

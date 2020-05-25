@@ -4,10 +4,10 @@ namespace Match_game__logic
     public class Player
     {
         private readonly string m_Name;
-        private readonly bool m_IsComputer;
         private bool m_isMyTurn;
         private int m_Score;
-        
+        private readonly bool m_IsComputer;
+
         public Player(string i_Name, bool i_IsComputer, bool i_IsMyTurn)
         {
             this.m_Name = i_Name;

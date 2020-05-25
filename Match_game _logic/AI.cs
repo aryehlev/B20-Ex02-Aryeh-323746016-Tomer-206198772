@@ -8,45 +8,90 @@ namespace Match_game__logic
         off,
         easy,
         normal,
-        hard
+        hard,
+        impossible
     }
 
     public class AI
     {
         private MultiplayerModes m_MultiplayerMode;
-        private char[] memorey;
+        private List<Card> m_Memory;
+        public const int k_NormalMemory = 2;
+        public const int k_HardMemory = 4;
 
         public AI(MultiplayerModes i_MultiplayerMode)
         {
             this.m_MultiplayerMode = i_MultiplayerMode;
+            this.m_Memory = new List<Card>();
         }
 
-        public BoardCoordinates[] GetCoordinatesForNextMove(Card[,] i_GameBoard)
+        public BoardCoordinates[] GetCoordinatesForNextMove(GameBoard i_GameBoard)
         {
-            List<BoardCoordinates> possibleCardsCoordinates = new List<BoardCoordinates>();
-            int heightOfBoard = i_GameBoard.GetLength(0);
-            int lengthOfBoard = i_GameBoard.GetLength(1);
+            BoardCoordinates[] nextMoveCoordinates = new BoardCoordinates[2];
+            List<Card> possibleCards = new List<Card>();
+            int heightOfBoard = i_GameBoard.GetHeightOfBoard();
+            int lengthOfBoard = i_GameBoard.GetLengthOfBoard();
             for (int i = 0; i < heightOfBoard; i++)
             {
-                for(int j = 0; j < lengthOfBoard; j++)
+                for (int j = 0; j < lengthOfBoard; j++)
                 {
-                    Card currentCard = i_GameBoard[i, j];
+                    Card currentCard = i_GameBoard.GetGameBoard()[i, j];
                     if (!currentCard.Exposed)
                     {
-                        possibleCardsCoordinates.Add(new BoardCoordinates(i,j));
+                        possibleCards.Add(currentCard);
                     }
                 }
             }
 
             Random rnd = new Random();
+            int firstCardIdx = rnd.Next(0, possibleCards.Count);
+            Card firstChoiceCard = possibleCards[firstCardIdx];
+            possibleCards.Remove(firstChoiceCard);
+            int secondCardIdx = rnd.Next(0, possibleCards.Count);
+            Card secondChoiceCard = possibleCards[secondCardIdx];
 
-            int firstCardNumber = rnd.Next(0, possibleCardsCoordinates.Count);
-            BoardCoordinates firstChoiceCardCoordinates = possibleCardsCoordinates[firstCardNumber];
-            possibleCardsCoordinates.Remove(firstChoiceCardCoordinates);
-            int secondCardNumber = rnd.Next(0, possibleCardsCoordinates.Count);
-            BoardCoordinates secondChoiceCardCoordinates = possibleCardsCoordinates[secondCardNumber];
-            BoardCoordinates[] nextMoveCoordinates = new BoardCoordinates[2];
-            return new BoardCoordinates[2]{firstChoiceCardCoordinates, secondChoiceCardCoordinates};
+            if (this.m_MultiplayerMode != MultiplayerModes.easy && this.m_Memory != null)  // search for a match in memory
+            {
+                //this.m_Memory.Remove(firstChoiceCard);  // avoid choosing the same card as a second choice
+                int memoryDepth = 0;
+                switch (this.m_MultiplayerMode)
+                {
+                    case MultiplayerModes.normal:
+                        memoryDepth = k_NormalMemory;
+                        break;
+                    case MultiplayerModes.hard:
+                        memoryDepth = k_HardMemory;
+                        break;
+                    case MultiplayerModes.impossible:
+                        memoryDepth = i_GameBoard.GetLengthOfBoard() * i_GameBoard.GetHeightOfBoard();
+                        break;
+                }
+                int cardsCheckedForMatch = 0;
+                foreach (Card cardFromMemory in this.m_Memory)
+                {
+                    if (cardsCheckedForMatch > memoryDepth)
+                    {
+                        break;
+                    }
+                    if (firstChoiceCard.Letter == cardFromMemory.Letter)
+                    {
+                        // There's a match
+                        this.m_Memory.Remove(cardFromMemory);
+                        secondChoiceCard = cardFromMemory;
+                    }
+
+                    cardsCheckedForMatch++;
+                }
+
+            }
+
+            return new BoardCoordinates[2] { firstChoiceCard.CardCoordinates, secondChoiceCard.CardCoordinates };
         }
+
+        public void SaveToMemory(Card i_Card)
+        {
+            this.m_Memory.Insert(0, i_Card);
+        }
+
     }
 }

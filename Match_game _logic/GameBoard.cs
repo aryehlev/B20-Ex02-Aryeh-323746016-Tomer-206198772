@@ -43,7 +43,9 @@ namespace Match_game__logic
 
         private void initGameBoard()
         {
-            int numberOfPairs = (this.m_GameBoard.GetLength(0) * this.m_GameBoard.GetLength(1)) / 2;
+            int LengthOfBoard = this.GetLengthOfBoard();
+            int heightOfBoard = this.GetHeightOfBoard();
+            int numberOfPairs = LengthOfBoard * heightOfBoard / 2;
             char[] cardsPossibleLetters = new char[numberOfPairs * 2];
             char nextLetter = 'A';
             for (int i = 0; i < numberOfPairs; i++)
@@ -62,11 +64,11 @@ namespace Match_game__logic
                 cardsPossibleLetters[randomNumber] = currentLetter;
             }
 
-            for (int i = 0; i < this.m_GameBoard.GetLength(0); i++)
+            for (int i = 0; i < heightOfBoard; i++)
             {
-                for (int j = 0; j < this.m_GameBoard.GetLength(1); j++)
+                for (int j = 0; j < LengthOfBoard; j++)
                 {
-                    this.m_GameBoard[i, j] = new Card(cardsPossibleLetters[i * this.m_GameBoard.GetLength(0) + j]);
+                    this.m_GameBoard[i, j] = new Card(cardsPossibleLetters[i * LengthOfBoard + j], new BoardCoordinates(i, j));
                     //this.m_GameBoard[i, j] = new Card('A');
                 }
             }
@@ -77,28 +79,28 @@ namespace Match_game__logic
             this.m_cardExposedByPlayer.Exposed = true;
         }
 
-        public bool GuessCard(BoardCoordinates i_boardCoordinates)
+        public bool GuessCard(BoardCoordinates i_boardCoordinates, out Card o_SecondGuessedCard)
         {
             bool guessWasCorrect = false;
-            Card cardPickedByPlayer = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
-            if (m_cardExposedByPlayer.Letter == cardPickedByPlayer.Letter)
+            o_SecondGuessedCard = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
+            if (m_cardExposedByPlayer.Letter == o_SecondGuessedCard.Letter)
             {
-                cardPickedByPlayer.Exposed = true;
+                o_SecondGuessedCard.Exposed = true;
                 m_numberOfExposedPairs += 1;
-                this.PrintGameBoard();
                 guessWasCorrect = true;
             }
             else
             {
-                cardPickedByPlayer.Exposed = true;
-                this.PrintGameBoard();
-                System.Threading.Thread.Sleep(2000);
-                cardPickedByPlayer.Exposed = false;
-                m_cardExposedByPlayer.Exposed = false;
-                this.PrintGameBoard();
+                o_SecondGuessedCard.Exposed = true;
             }
 
             return guessWasCorrect;
+        }
+
+        public void ReturnToPassedBoardAfterBadGuess(Card i_SecondGuessedCard)
+        {
+            i_SecondGuessedCard.Exposed = false;
+            this.m_cardExposedByPlayer.Exposed = false;
         }
 
         public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
@@ -119,6 +121,11 @@ namespace Match_game__logic
         public int GetHeightOfBoard()
         {
             return this.m_GameBoard.GetLength(0);
+        }
+
+        public Card GetCardByCoordinates(BoardCoordinates i_CardCoordinates)
+        {
+            return this.m_GameBoard[i_CardCoordinates.Row, i_CardCoordinates.Column];
         }
 
         public Card[,] GetGameBoard()

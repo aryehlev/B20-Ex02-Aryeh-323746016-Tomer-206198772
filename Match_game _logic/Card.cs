@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,13 +9,13 @@ namespace Match_game__logic
     {
         private char m_Letter;
         private bool m_Exposed;
+        private BoardCoordinates m_CardCoordinates;
 
-
-
-        public Card(char i_Letter)
+        public Card(char i_Letter, BoardCoordinates i_CardCoordinates)
         {
             this.m_Letter = i_Letter;
             this.m_Exposed = false;
+            this.m_CardCoordinates = i_CardCoordinates;
         }
 
         public bool Exposed
@@ -40,6 +39,14 @@ namespace Match_game__logic
             set
             {
                 this.m_Letter = value;
+            }
+        }
+
+        public BoardCoordinates CardCoordinates
+        {
+            get
+            {
+                return this.m_CardCoordinates;
             }
         }
 
