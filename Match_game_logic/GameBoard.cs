@@ -83,9 +83,9 @@ namespace Match_game_logic
         {
             bool guessWasCorrect = false;
             Card guessedCard = this.GetCardByCoordinates(i_boardCoordinates);
+            guessedCard.Exposed = true;
             if (m_cardTemporaryExposedByPlayer.Letter == guessedCard.Letter)
             {
-                guessedCard.Exposed = true;
                 m_numberOfExposedPairs += 1;
                 guessWasCorrect = true;
             }

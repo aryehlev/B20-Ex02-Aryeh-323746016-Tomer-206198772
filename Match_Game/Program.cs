@@ -52,11 +52,9 @@ namespace Match_game
                     playGame.ExposeCard(nextMovesCoordinates[0]);
                     UI.ShowGameBoard(gameBoard);
                 }
-                computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                bool wasGoodGuess;
-                wasGoodGuess = playGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]);
-                computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
-                if (wasGoodGuess)
+               // computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                //computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                if (playGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]))
                 {
                     UI.ShowGameBoard(gameBoard);
                 }

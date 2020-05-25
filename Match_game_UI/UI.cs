@@ -19,11 +19,11 @@ namespace Match_game_UI
             }
             if(inputFromUser == "1")
             {
-                Console.WriteLine("Choose Difficaulty Level: easy , normal, hard or impossible");
+                Console.WriteLine("Choose Difficaulty Level: easy - e, normal - n, hard - h or impossible - i");
                 inputFromUser = Console.ReadLine();
-                while(inputFromUser != "easy" && inputFromUser != "normal" && inputFromUser != "hard" && inputFromUser != "impossible")
+                while(inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "h" && inputFromUser != "i")
                 {
-                    Console.WriteLine("Choose Difficaulty Level: easy , normal, hard or impossible, Please use EXACTLY the same words as written");
+                    Console.WriteLine("Choose Difficaulty Level: e , n, hor i, Please use EXACTLY the same letters as written");
                     inputFromUser = Console.ReadLine();
                 }
             }
@@ -86,46 +86,49 @@ namespace Match_game_UI
         public static BoardCoordinates GetAndCheckCoordinatesInput(Game i_CurrGame, string i_PlayerName)
         {
             Console.WriteLine($"{i_PlayerName}, please choose next coordinates");
-            string inputFromUser = Console.ReadLine();
             BoardCoordinates coordinatesFromUser = new BoardCoordinates();
-            while (true)
+            bool isInputValid = false;
+            while (!isInputValid)
             {
+                string inputFromUser = Console.ReadLine();
                 if (inputFromUser == "Q")
                 {
                     Console.WriteLine("\nSee you next time!");
                     System.Threading.Thread.Sleep(2000);
                     Environment.Exit(0);
                 }
-                if(inputFromUser != null && inputFromUser.Length == 2)
+                if(inputFromUser == null && inputFromUser.Length != 2)
                 {
-                    coordinatesFromUser = BoardCoordinates.ParsePlacement(inputFromUser);
-                    int row = coordinatesFromUser.Row;
-                    int column = coordinatesFromUser.Column;
-                    int lengthOfBoard = i_CurrGame.GameBoard.GetLengthOfBoard();
-                    int heightOfBoard = i_CurrGame.GameBoard.GetHeightOfBoard();
-                    if(column >= lengthOfBoard)
-                    {
-                        Console.WriteLine($"{(char)('A' + column)} does not fit in board paramaters");
-                    }
-                    else if(row >= heightOfBoard)
-                    {
-                        Console.WriteLine($"{row + 1} does not fit in board paramaters");
-                    }
-                    else if(i_CurrGame.IsCardAlreadyExposed(coordinatesFromUser))
-                    {
-                        Console.WriteLine("The card you picked is already exposed");
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    Console.WriteLine("you need to put in 2 coordinates, for example 'A1'");
+                    continue;
+                }
+                coordinatesFromUser = BoardCoordinates.TryParsePlacement(inputFromUser, out bool wasSuccess);
+                if(!wasSuccess)
+                {
+                    Console.WriteLine("you need to put in a capital letter and a number bigger than 0, for example 'A1'");
+                    continue;
+                }
+                
+                int row = coordinatesFromUser.Row;
+                int column = coordinatesFromUser.Column;
+                int lengthOfBoard = i_CurrGame.GameBoard.GetLengthOfBoard();
+                int heightOfBoard = i_CurrGame.GameBoard.GetHeightOfBoard();
+                if(column >= lengthOfBoard)
+                {
+                    Console.WriteLine($"{(char)('A' + column)} does not fit in board paramaters");
+                }
+                else if(row >= heightOfBoard)
+                { 
+                    Console.WriteLine($"{row + 1} does not fit in board paramaters");
+                }
+                else if(i_CurrGame.IsCardAlreadyExposed(coordinatesFromUser))
+                { 
+                    Console.WriteLine("The card you picked is already exposed");
                 }
                 else
                 {
-                    Console.WriteLine("you need to put in 2 coordinates, for example 'A1'");
+                    isInputValid = true;
                 }
-
-                inputFromUser = Console.ReadLine();
             }
 
             return coordinatesFromUser;
