@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Match_game__logic
 {
@@ -70,6 +67,7 @@ namespace Match_game__logic
                 for (int j = 0; j < this.m_GameBoard.GetLength(1); j++)
                 {
                     this.m_GameBoard[i, j] = new Card(cardsPossibleLetters[i * this.m_GameBoard.GetLength(0) + j]);
+                    //this.m_GameBoard[i, j] = new Card('A');
                 }
             }
         }
@@ -86,7 +84,7 @@ namespace Match_game__logic
             if (m_cardExposedByPlayer.Letter == cardPickedByPlayer.Letter)
             {
                 cardPickedByPlayer.Exposed = true;
-                m_numberOfExposedPairs += 2;
+                m_numberOfExposedPairs += 1;
                 this.PrintGameBoard();
                 guessWasCorrect = true;
             }
@@ -121,6 +119,11 @@ namespace Match_game__logic
         public int GetHeightOfBoard()
         {
             return this.m_GameBoard.GetLength(0);
+        }
+
+        public Card[,] GetGameBoard()
+        {
+            return this.m_GameBoard;
         }
 
         public void PrintGameBoard()

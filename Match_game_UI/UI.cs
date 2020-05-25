@@ -34,12 +34,46 @@ namespace Match_game_UI
             string coordinates = "";
             while(!playGame.IsGameOver())
             {
-                    Console.WriteLine($"{playGame.WhosTurnIsIt().PlayerName}, please choose next coordinates");
+                Player currentPlayer = playGame.WhosTurnIsIt();
+                if(!currentPlayer.IsComputer)
+                {
+                    Console.WriteLine($"{currentPlayer.Name}, please choose next coordinates");
                     coordinates = CheckInputFromUser.CheckCoordanitesInput(playGame);
                     playGame.FirstMove(coordinates[1] - '0' - 1, coordinates[0] - 'A');
-                    Console.WriteLine($"{playGame.WhosTurnIsIt().PlayerName}, please choose second coordinates");
+                    Console.WriteLine($"{playGame.WhosTurnIsIt().Name}, please choose second coordinates");
                     coordinates = CheckInputFromUser.CheckCoordanitesInput(playGame);
                     playGame.SecondMove(coordinates[1] - '0' - 1, coordinates[0] - 'A');
+                }
+                else
+                {
+                    AI computerAI = new AI(Difficulty.easy);
+                    AI.BoardCoordinates[] nextMovesCoordinates = computerAI.GetCoordinatesForNextMove(playGame.Ge);
+                    playGame.FirstMove(AI)
+                    playGame.SecondMove()
+                }
+            }
+
+            bool wasTie;
+            Player losingPlayer;
+            Player winningPlayer = playGame.WhichPlayerWon(out losingPlayer, out wasTie);
+            if (wasTie)
+            {
+                Console.WriteLine("Good Game! It was a tie this time...");
+            }
+            else
+            {
+                Console.WriteLine($"Congratulations Player {winningPlayer.Name}! You won with {winningPlayer.Score} pairs, {losingPlayer.Name} you got {losingPlayer.Score} pairs right");
+            }
+            Console.WriteLine("Rematch? (Y / N)");
+            if(CheckInputFromUser.CheckIfWantRematch())
+            {
+                Game newGame = new Game(playGame.GetHeightOfBoard(), playGame.GetLengthOfBoard(), playGame.GetMultiPlayer(), playGame.Player1.Name, playGame.Player2.Name);
+                startGame(newGame);
+            }
+            else
+            {
+                Console.WriteLine("Good Game, See you Next time, press any key to exit");
+                Console.ReadLine();
             }
 
         }

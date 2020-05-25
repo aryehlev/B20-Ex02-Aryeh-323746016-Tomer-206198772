@@ -3,40 +3,36 @@ namespace Match_game__logic
 {
     public class Player
     {
-        private string m_PlayerName;
-        private int m_PlayerScore;
-        private bool m_IsComputer;
+        private readonly string m_Name;
+        private readonly bool m_IsComputer;
         private bool m_isMyTurn;
-
-        public Player(string i_PlayerName, bool i_IsComputer, bool i_IsMyTurn)
+        private int m_Score;
+        
+        public Player(string i_Name, bool i_IsComputer, bool i_IsMyTurn)
         {
-            this.m_PlayerName = i_PlayerName;
-            this.m_PlayerScore = 0;
+            this.m_Name = i_Name;
+            this.m_Score = 0;
             this.m_IsComputer = i_IsComputer;
             this.m_isMyTurn = i_IsMyTurn;
         }
 
-        public int PlayerScore
+        public int Score
         {
             get
             {
-                return this.m_PlayerScore;
+                return this.m_Score;
             }
             set
             {
-                this.m_PlayerScore = value;
+                this.m_Score = value;
             }
         }
 
-        public string PlayerName
+        public string Name
         {
             get
             {
-                return this.m_PlayerName;
-            }
-            set
-            {
-                this.m_PlayerName = value;
+                return this.m_Name;
             }
         }
 
@@ -51,6 +47,14 @@ namespace Match_game__logic
                 this.m_isMyTurn = value;
             }
 
+        }
+
+        public bool IsComputer
+        {
+            get
+            {
+                return this.m_IsComputer;
+            }
         }
     }
 }

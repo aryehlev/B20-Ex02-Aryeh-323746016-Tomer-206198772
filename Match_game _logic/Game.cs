@@ -1,6 +1,4 @@
 ﻿
-using System;
-using System.Text;
 
 namespace Match_game__logic
 {
@@ -25,6 +23,8 @@ namespace Match_game__logic
             this.m_GameBoard.PrintGameBoard();
         }
 
+
+
         public void FirstMove(int i_Row, int i_Column)
         {
             this.m_GameBoard.ExposeCard(i_Row, i_Column);
@@ -37,11 +37,11 @@ namespace Match_game__logic
             {
                 if(m_player1.IsMyTurn)
                 {
-                    this.m_player1.PlayerScore++;
+                    this.m_player1.Score++;
                 }
                 else
                 {
-                    this.m_player2.PlayerScore++;
+                    this.m_player2.Score++;
                 }
             }
             else
@@ -72,6 +72,10 @@ namespace Match_game__logic
             return this.m_GameBoard.GetHeightOfBoard();
         }
 
+        public bool GetMultiPlayer()
+        {
+            return this.m_MultiPlayerMode;
+        }
 
         public Player Player1
         {
@@ -100,6 +104,24 @@ namespace Match_game__logic
         public Player WhosTurnIsIt()
         {
             return Player1.IsMyTurn ? Player1 : Player2;
+        }
+
+        public Player WhichPlayerWon(out Player o_LoosingPlayer, out bool o_WasTie)
+        {
+            o_WasTie = Player1.Score == Player2.Score;
+            Player winningPlayer = null;
+            if(Player1.Score >= Player2.Score)
+            {
+                winningPlayer = Player1;
+                o_LoosingPlayer = Player2;
+            }
+            else
+            {
+                winningPlayer = Player2;
+                o_LoosingPlayer = Player1;
+            }
+
+            return winningPlayer;
         }
 
     }

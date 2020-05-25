@@ -1,32 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Match_game__logic;
 
 namespace Match_game_UI
 {
     internal class CheckInputFromUser
+
     {
-         internal static bool CheckMultiPlayer()
-         { 
-             string inputFromUser = Console.ReadLine();
-            while (inputFromUser != "1" && inputFromUser != "2")
+        internal static bool CheckMultiPlayer()
+        {
+            string inputFromUser = Console.ReadLine();
+            while(inputFromUser != "1" && inputFromUser != "2")
             {
                 Console.WriteLine("please enter either 1 or 2");
                 inputFromUser = Console.ReadLine();
             }
 
-            bool isMultiPlayer = inputFromUser == "2" ? true : false;
-            
-            return isMultiPlayer;
+            return inputFromUser == "2" ? true : false;
         }
 
         internal static int CheckLengthOrHeight()
         {
             string inputFromUserStr = Console.ReadLine();
-            while (inputFromUserStr == null || inputFromUserStr != "4" && inputFromUserStr != "6")
+            while(inputFromUserStr == null || inputFromUserStr != "4" && inputFromUserStr != "6")
             {
                 Console.WriteLine("please enter either 4 or 6");
                 inputFromUserStr = Console.ReadLine();
@@ -40,21 +35,27 @@ namespace Match_game_UI
             string inputFromUser = Console.ReadLine();
             while(true)
             {
+                if(inputFromUser == "Q")
+                {
+                    Console.WriteLine("\nSee you next time!");
+                    System.Threading.Thread.Sleep(2000);
+                    Environment.Exit(0);
+                }
                 if(inputFromUser != null && inputFromUser.Length == 2)
                 {
                     int row = inputFromUser[1] - '0' - 1;
                     int column = inputFromUser[0] - 'A';
                     int lengthOfBoard = i_CurrGame.GetLengthOfBoard();
                     int heightOfBoard = i_CurrGame.GetHeightOfBoard();
-                    if (column >= lengthOfBoard || column < 0)
+                    if(column >= lengthOfBoard || column < 0)
                     {
                         Console.WriteLine($"{(char)('A' + column)} does not fit in board paramaters");
                     }
-                    else if (row >= heightOfBoard || row < 0)
+                    else if(row >= heightOfBoard || row < 0)
                     {
                         Console.WriteLine($"{row + 1} does not fit in board paramaters");
                     }
-                    else if (i_CurrGame.IsCardExposed(row, column))
+                    else if(i_CurrGame.IsCardExposed(row, column))
                     {
                         Console.WriteLine("The card you picked is already exposed");
                     }
@@ -67,35 +68,23 @@ namespace Match_game_UI
                 {
                     Console.WriteLine("you need to put in 2 coordinates, for example 'A1'");
                 }
+
                 inputFromUser = Console.ReadLine();
             }
 
             return inputFromUser;
-
         }
 
-        internal static bool CheckCoordanites(string i_InputFromUser, int i_Row, int i_Column, int i_LengthOfBoard, int i_HeightOfBoard, bool i_IsCardExposed)
+        internal static bool CheckIfWantRematch()
         {
-                bool isOkCoordinates = true;
-                if(i_Column >= i_LengthOfBoard || i_Column < 0)
-                {
-                    Console.WriteLine($"{i_InputFromUser[0]} does not fit in board paramaters");
-                    isOkCoordinates = false;
-                }
-                if (i_Row >= i_HeightOfBoard || i_Row < 0)
-                {
-                    Console.WriteLine($"{i_InputFromUser[1]} does not fit in board paramaters");
-                    isOkCoordinates = false;
-                }
+            string inputFromUser = Console.ReadLine();
+            while(inputFromUser != "Y" && inputFromUser != "N")
+            {
+                Console.WriteLine("I didn't Understand, Would you like to play another game, press Y if you do and N if you don't");
+                inputFromUser = Console.ReadLine();
+            }
 
-                if(i_IsCardExposed)
-                {
-                    Console.WriteLine("The card you picked is already exposed");
-                    isOkCoordinates = false;
-                }
-
-                return isOkCoordinates;
-
+            return inputFromUser == "Y";
         }
     }
 }
