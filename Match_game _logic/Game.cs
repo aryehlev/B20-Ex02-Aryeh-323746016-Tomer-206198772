@@ -1,6 +1,6 @@
 ﻿
 
-namespace Match_game__logic
+namespace Match_game_logic
 {
     public class Game
     {

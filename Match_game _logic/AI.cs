@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Match_game__logic
+namespace Match_game_logic
 {
     public enum MultiplayerModes
     {

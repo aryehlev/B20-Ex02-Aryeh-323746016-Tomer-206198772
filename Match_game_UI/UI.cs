@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using Match_game__logic;
+using Match_game_logic;
 
 namespace Match_game_UI
 {

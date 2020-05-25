@@ -1,5 +1,5 @@
 ﻿using System;
-using Match_game__logic;
+using Match_game_logic;
 using Match_game_UI;
 
 namespace Match_game

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Match_game__logic
+namespace Match_game_logic
 {
     public class GameBoard
     {
