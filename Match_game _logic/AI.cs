@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace Match_game_logic
 {
     public enum MultiplayerModes
@@ -14,7 +15,7 @@ namespace Match_game_logic
 
     public class AI
     {
-        private MultiplayerModes m_MultiplayerMode;
+        private readonly MultiplayerModes m_MultiplayerMode;
         private List<Card> m_Memory;
         public const int k_NormalMemory = 2;
         public const int k_HardMemory = 4;
