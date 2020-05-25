@@ -71,16 +71,16 @@ namespace Match_game__logic
                 }
             }
         }
-        public void ExposeCard(int i_Row, int i_Column)
+        public void ExposeCard(BoardCoordinates i_boardCoordinates)
         { 
-            this.m_cardExposedByPlayer = this.m_GameBoard[i_Row, i_Column];
+            this.m_cardExposedByPlayer = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
             this.m_cardExposedByPlayer.Exposed = true;
         }
 
-        public bool GuessCard(int i_Row, int i_Column)
+        public bool GuessCard(BoardCoordinates i_boardCoordinates)
         {
             bool guessWasCorrect = false;
-            Card cardPickedByPlayer = this.m_GameBoard[i_Row, i_Column];
+            Card cardPickedByPlayer = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
             if (m_cardExposedByPlayer.Letter == cardPickedByPlayer.Letter)
             {
                 cardPickedByPlayer.Exposed = true;
@@ -101,9 +101,9 @@ namespace Match_game__logic
             return guessWasCorrect;
         }
 
-        public bool IsCardExposed(int i_row, int i_column)
+        public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
         {
-             return this.m_GameBoard[i_row, i_column].Exposed;
+             return this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column].Exposed;
         }
 
         public bool IsBoardFullyExposed()
@@ -158,7 +158,7 @@ namespace Match_game__logic
                 strToReturn.Append(getSeperationRow(lenghtOfBoard));
             }
 
-            Console.WriteLine(strToReturn.ToString());
+            Console.Out.WriteLine(strToReturn);
         }
 
         private static string getSeperationRow(int i_columnsNumber)

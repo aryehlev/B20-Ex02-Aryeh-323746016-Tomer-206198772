@@ -6,7 +6,7 @@ namespace Match_game_UI
     internal class CheckInputFromUser
 
     {
-        internal static bool CheckMultiPlayer()
+        internal static MultiplayerModes CheckMultiPlayer()
         {
             string inputFromUser = Console.ReadLine();
             while(inputFromUser != "1" && inputFromUser != "2")
@@ -15,7 +15,7 @@ namespace Match_game_UI
                 inputFromUser = Console.ReadLine();
             }
 
-            return inputFromUser == "2" ? true : false;
+            return inputFromUser == "1" ? MultiplayerModes.easy : MultiplayerModes.off;
         }
 
         internal static int CheckLengthOrHeight()
@@ -33,7 +33,7 @@ namespace Match_game_UI
         internal static BoardCoordinates CheckCoordanitesInput(Game i_CurrGame)
         {
             string inputFromUser = Console.ReadLine();
-            BoardCoordinates coordinatesFromUser = BoardCoordinates.ParsePlacement(inputFromUser);
+            BoardCoordinates coordinatesFromUser = new BoardCoordinates();
             while (true)
             {
                 if (inputFromUser == "Q")
@@ -42,8 +42,9 @@ namespace Match_game_UI
                     System.Threading.Thread.Sleep(2000);
                     Environment.Exit(0);
                 }
-                if(inputFromUser != null && inputFromUser.Length == 2 && coordinatesFromUser.Row != -1)
+                if(inputFromUser != null && inputFromUser.Length == 2)
                 {
+                    coordinatesFromUser = BoardCoordinates.ParsePlacement(inputFromUser);
                     int row = coordinatesFromUser.Row;
                     int column = coordinatesFromUser.Column;
                     int lengthOfBoard = i_CurrGame.GetLengthOfBoard();
@@ -56,7 +57,7 @@ namespace Match_game_UI
                     {
                         Console.WriteLine($"{row + 1} does not fit in board paramaters");
                     }
-                    else if(i_CurrGame.IsCardExposed(row, column))
+                    else if(i_CurrGame.IsCardExposed(coordinatesFromUser))
                     {
                         Console.WriteLine("The card you picked is already exposed");
                     }
@@ -71,7 +72,6 @@ namespace Match_game_UI
                 }
 
                 inputFromUser = Console.ReadLine();
-                coordinatesFromUser = BoardCoordinates.ParsePlacement(inputFromUser);
             }
 
             return coordinatesFromUser;

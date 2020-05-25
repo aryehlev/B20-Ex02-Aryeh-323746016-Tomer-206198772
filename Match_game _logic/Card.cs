@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Match_game__logic
 {
-    class Card
+    public class Card
     {
         private char m_Letter;
         private bool m_Exposed;

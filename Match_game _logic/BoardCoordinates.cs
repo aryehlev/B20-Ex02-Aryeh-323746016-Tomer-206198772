@@ -7,7 +7,7 @@ namespace Match_game__logic
         private int m_Row;
         private int m_Column;
 
-        public BoardCoordinates(int i_Row, int i_Column)
+        public BoardCoordinates(int i_Row = -1, int i_Column = -1)
         {
             this.m_Row = i_Row;
             this.m_Column = i_Column;
@@ -15,7 +15,7 @@ namespace Match_game__logic
 
         public static BoardCoordinates ParsePlacement(string i_placement)
         {
-            BoardCoordinates newBoardCoordinates = new BoardCoordinates(-1, -1);
+            BoardCoordinates newBoardCoordinates = new BoardCoordinates();
             if (Char.IsUpper(i_placement[0]) && Char.IsDigit(i_placement[1]) && i_placement[1] != '0')
             {
                 newBoardCoordinates = new BoardCoordinates(i_placement[1] - '0' - 1, i_placement[0] - 'A');
@@ -46,7 +46,5 @@ namespace Match_game__logic
                 this.m_Column = value;
             }
         }
-
-        public 
     }
 }

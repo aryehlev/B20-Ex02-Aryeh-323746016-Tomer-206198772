@@ -14,7 +14,7 @@ namespace Match_game_UI
         static Game createGame()
         {
             Console.WriteLine("Hi, welcome to the Matching game!\npress 1 if you would like to play against the Computer and 2 if you would like to play two players");
-            bool multiplayer = CheckInputFromUser.CheckMultiPlayer();
+            MultiplayerModes multiplayerMode = CheckInputFromUser.CheckMultiPlayer();
             Console.WriteLine("please enter desired Length of board either 4, or 6");
             int lenOfBoard = CheckInputFromUser.CheckLengthOrHeight();
             Console.WriteLine("please enter desired Height of board either 4, or 6");
@@ -22,22 +22,22 @@ namespace Match_game_UI
             Console.WriteLine("please enter player one name");
             string player1Name = Console.ReadLine();
             string player2Name = "Computer";
-            if (multiplayer)
+            if (multiplayerMode == MultiplayerModes.off)
             {
                 Console.WriteLine("please enter second player name");
                 player2Name = Console.ReadLine();
             }
 
-            return new Game(heightOfBoard, lenOfBoard, multiplayer, player1Name, player2Name);
+            return new Game(heightOfBoard, lenOfBoard, multiplayerMode, player1Name, player2Name);
         }
 
         static void startGame(Game playGame)
         {
-            BoardCoordinates coordinates = "";
-            while(!playGame.IsGameOver())
+            BoardCoordinates coordinates;
+            while (!playGame.IsGameOver())
             {
                 Player currentPlayer = playGame.WhosTurnIsIt();
-                if(!currentPlayer.IsComputer)
+                if (!currentPlayer.IsComputer)
                 {
                     Console.WriteLine($"{currentPlayer.Name}, please choose next coordinates");
                     coordinates = CheckInputFromUser.CheckCoordanitesInput(playGame);
@@ -48,10 +48,10 @@ namespace Match_game_UI
                 }
                 else
                 {
-                    AI computerAI = new AI(Difficulty.easy);
-                    AI.BoardCoordinates[] nextMovesCoordinates = computerAI.GetCoordinatesForNextMove(playGame.Ge);
-                    playGame.FirstMove(AI)
-                    playGame.SecondMove()
+                    AI computerAI = new AI(MultiplayerModes.easy);
+                    BoardCoordinates[] nextMovesCoordinates = computerAI.GetCoordinatesForNextMove(playGame.GameBoard.GetGameBoard());
+                    playGame.FirstMove(nextMovesCoordinates[0]);
+                    playGame.SecondMove(nextMovesCoordinates[1]);
                 }
             }
 
@@ -67,7 +67,7 @@ namespace Match_game_UI
                 Console.WriteLine($"Congratulations Player {winningPlayer.Name}! You won with {winningPlayer.Score} pairs, {losingPlayer.Name} you got {losingPlayer.Score} pairs right");
             }
             Console.WriteLine("Rematch? (Y / N)");
-            if(CheckInputFromUser.CheckIfWantRematch())
+            if (CheckInputFromUser.CheckIfWantRematch())
             {
                 Game newGame = new Game(playGame.GetHeightOfBoard(), playGame.GetLengthOfBoard(), playGame.GetMultiPlayer(), playGame.Player1.Name, playGame.Player2.Name);
                 startGame(newGame);
