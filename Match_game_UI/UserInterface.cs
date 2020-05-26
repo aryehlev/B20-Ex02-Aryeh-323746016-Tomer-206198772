@@ -21,9 +21,9 @@ namespace Match_game_UI
             {
                 Console.WriteLine("Choose Difficulty Level: Computer Chooses Randomly - r, Easy - e, normal - n ,Genius - g");
                 inputFromUser = Console.ReadLine();
-                while (inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "h" && inputFromUser != "i" && inputFromUser != "g")
+                while (inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "r" && inputFromUser != "g")
                 {
-                    Console.WriteLine("Choose Difficulty Level: r, e , n, h or g, Please use EXACTLY the same letters as written");
+                    Console.WriteLine("Choose Difficulty Level: r, e , n or g, Please use EXACTLY the same letters as written");
                     inputFromUser = Console.ReadLine();
                 }
             }
@@ -39,9 +39,6 @@ namespace Match_game_UI
                 case "n":
                     mode = eMultiplayerModes.Easy;
                     break;
-                case "h":
-                    mode = eMultiplayerModes.Normal;
-                    break;
                 case "g":
                     mode = eMultiplayerModes.Genius;
                     break;
@@ -52,12 +49,12 @@ namespace Match_game_UI
 
         public static int[] GetHeightAndLength()
         {
-            Console.WriteLine("please enter desired Height of board  4,5 or 6");
+            Console.WriteLine("please enter desired Height of board  4, 5 or 6");
             string inputFromUserStr = Console.ReadLine();
             int[] lengthAndHeight = new int[2];
-            while ((inputFromUserStr == null) || (inputFromUserStr != "4" && inputFromUserStr != "6" && inputFromUserStr != "5"))
+            while ((inputFromUserStr == null) || (inputFromUserStr != "4" && inputFromUserStr != "5" && inputFromUserStr != "6"))
             {
-                Console.WriteLine("please enter either 4 or 5 or 6");
+                Console.WriteLine("please enter either 4, 5 or 6");
                 inputFromUserStr = Console.ReadLine();
             }
 
@@ -78,12 +75,12 @@ namespace Match_game_UI
             }
             else
             {
-                Console.WriteLine("please enter desired Length of board either 4,5 or 6");
+                Console.WriteLine("please enter desired Length of board either 4, 5 or 6");
                 inputFromUserStr = Console.ReadLine();
 
                 while ((inputFromUserStr == null) || (inputFromUserStr != "4" && inputFromUserStr != "6" && inputFromUserStr != "5"))
                 {
-                    Console.WriteLine("please enter either 4 or 5 or 6");
+                    Console.WriteLine("please enter either 4, 5 or 6");
                     inputFromUserStr = Console.ReadLine();
                 }
 

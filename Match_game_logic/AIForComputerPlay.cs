@@ -71,14 +71,13 @@ namespace Match_game_logic
                 {
                     foreach (BoardCoordinates boardCoordinates2 in this.r_Memory)
                     {
-                        if (i_GameBoard.GetCardByCoordinates(boardCoordinates1).Letter == i_GameBoard.GetCardByCoordinates(boardCoordinates2).Letter && boardCoordinates1.Column != boardCoordinates2.Column && boardCoordinates1.Row!= boardCoordinates2.Row)
+                        if (i_GameBoard.GetCardByCoordinates(boardCoordinates1).Letter == i_GameBoard.GetCardByCoordinates(boardCoordinates2).Letter && 
+                            boardCoordinates1.Column != boardCoordinates2.Column && boardCoordinates1.Row!= boardCoordinates2.Row)
                         {
                             secondChoiceBoardCoordinates = boardCoordinates2;
                             firstChoiceBoardCoordinates = boardCoordinates1;
-
                         }
                     }
-
                 }
             }
             else if (this.r_MultiplayerMode != eMultiplayerModes.Random && this.r_Memory.Any())
@@ -111,6 +110,5 @@ namespace Match_game_logic
                 this.r_Memory.Insert(0, i_BoardCoordinates);
             }
         }
-
     }
 }
