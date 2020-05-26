@@ -19,7 +19,7 @@ namespace Match_game_UI
 
             if (inputFromUser == "1")
             {
-                Console.WriteLine("Choose Difficulty Level: Random - r, Easy - e, Normal - n ,Hard - h, Genius - g");
+                Console.WriteLine("Choose Difficulty Level: Computer Chooses Randomly - r, Easy - e, normal - n ,Genius - g");
                 inputFromUser = Console.ReadLine();
                 while (inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "h" && inputFromUser != "i" && inputFromUser != "g")
                 {
@@ -37,10 +37,10 @@ namespace Match_game_UI
                     mode = eMultiplayerModes.Easy;
                     break;
                 case "n":
-                    mode = eMultiplayerModes.Normal;
+                    mode = eMultiplayerModes.Easy;
                     break;
                 case "h":
-                    mode = eMultiplayerModes.Hard;
+                    mode = eMultiplayerModes.Normal;
                     break;
                 case "g":
                     mode = eMultiplayerModes.Genius;
@@ -50,18 +50,49 @@ namespace Match_game_UI
             return mode;
         }
 
-        public static int GetHeight()
+        public static int[] GetHeightAndLength()
         {
-            Console.WriteLine("please enter desired Height of board either 4, or 6");
-            return CheckLengthOrHeight();
+            Console.WriteLine("please enter desired Height of board  4,5 or 6");
+            string inputFromUserStr = Console.ReadLine();
+            int[] lengthAndHeight = new int[2];
+            while ((inputFromUserStr == null) || (inputFromUserStr != "4" && inputFromUserStr != "6" && inputFromUserStr != "5"))
+            {
+                Console.WriteLine("please enter either 4 or 5 or 6");
+                inputFromUserStr = Console.ReadLine();
+            }
+
+            lengthAndHeight[0] = int.Parse(inputFromUserStr);
+
+            if(lengthAndHeight[0] == 5)
+            {
+                Console.WriteLine("please enter desired Length of board either 4, or 6");
+                inputFromUserStr = Console.ReadLine();
+                
+                while (inputFromUserStr == null || (inputFromUserStr != "4" && inputFromUserStr != "6"))
+                {
+                    Console.WriteLine("please enter either 4 or 6");
+                    inputFromUserStr = Console.ReadLine();
+                }
+               
+                lengthAndHeight[1] = int.Parse(inputFromUserStr);
+            }
+            else
+            {
+                Console.WriteLine("please enter desired Length of board either 4,5 or 6");
+                inputFromUserStr = Console.ReadLine();
+
+                while ((inputFromUserStr == null) || (inputFromUserStr != "4" && inputFromUserStr != "6" && inputFromUserStr != "5"))
+                {
+                    Console.WriteLine("please enter either 4 or 5 or 6");
+                    inputFromUserStr = Console.ReadLine();
+                }
+
+                lengthAndHeight[1] = int.Parse(inputFromUserStr);
+            }
+
+            return lengthAndHeight;
         }
 
-        public static int GetLength()
-        {
-            Console.WriteLine("please enter desired Length of board either 4, or 6");
-            return CheckLengthOrHeight();
-        }
-        
         public static string GetNameOfPlayer(int i_PlayerNumber)
         {
             Console.WriteLine($"please enter player {i_PlayerNumber} name");
@@ -73,19 +104,7 @@ namespace Match_game_UI
             Console.Out.WriteLine("Now it's the computer's turn to play");
             System.Threading.Thread.Sleep(3000);
         }
-
-        public static int CheckLengthOrHeight()
-        {
-            string inputFromUserStr = Console.ReadLine();
-            while ((inputFromUserStr == null) || (inputFromUserStr != "4" && inputFromUserStr != "6"))
-            {
-                Console.WriteLine("please enter either 4 or 6");
-                inputFromUserStr = Console.ReadLine();
-            }
-
-            return int.Parse(inputFromUserStr);
-        }
-
+        
         public static BoardCoordinates GetAndCheckCoordinatesInput(Game i_CurrGame, Player i_CurrentPlayer)
         {
             Console.WriteLine($"{i_CurrentPlayer.Name}, you currently have {i_CurrentPlayer.Score} pairs. please choose next coordinates");

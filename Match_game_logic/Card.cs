@@ -38,13 +38,5 @@
                 this.m_Letter = value;
             }
         }
-
-        public BoardCoordinates CardCoordinates
-        {
-            get
-            {
-                return this.r_CardCoordinates;
-            }
-        }
     }
 }

@@ -14,8 +14,7 @@ namespace Match_game
         private static Game createGame()
         {
             eMultiplayerModes multiplayerMode = UserInterface.GetAndCheckMultiPlayerMode();
-            int lenOfBoard = UserInterface.GetHeight();
-            int heightOfBoard = UserInterface.GetLength();
+            int[] HeightAndlenOfOfBoard = UserInterface.GetHeightAndLength();
             string player1Name = UserInterface.GetNameOfPlayer(1);
             string player2Name = "Computer";
             if (multiplayerMode == eMultiplayerModes.Off)
@@ -23,7 +22,7 @@ namespace Match_game
                 player2Name = UserInterface.GetNameOfPlayer(2);
             }
 
-            return new Game(heightOfBoard, lenOfBoard, multiplayerMode, player1Name, player2Name);
+            return new Game(HeightAndlenOfOfBoard[0], HeightAndlenOfOfBoard[1], multiplayerMode, player1Name, player2Name);
         }
 
         private static void startGame(Game i_PlayGame)
@@ -51,26 +50,21 @@ namespace Match_game
                     UserInterface.ShowGameBoard(gameBoard, 1000);
                 }
 
-                if (i_PlayGame.MultiplayerMode != eMultiplayerModes.Off)
-                {
-                    i_PlayGame.AiForComputerPlay.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                    i_PlayGame.AiForComputerPlay.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
-                }
-
                 if (i_PlayGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]))
                 {
                     UserInterface.ShowGameBoard(gameBoard);
-                    if (i_PlayGame.MultiplayerMode != eMultiplayerModes.Off)
-                    {
-                        i_PlayGame.AiForComputerPlay.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                        i_PlayGame.AiForComputerPlay.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
-                    }
                 }
                 else
                 {
                     UserInterface.ShowGameBoard(gameBoard, 2000);
                     gameBoard.EraseLastMoveFromBoard(nextMovesCoordinates[1]);
                     UserInterface.ShowGameBoard(gameBoard);
+                    if (i_PlayGame.MultiplayerMode != eMultiplayerModes.Off)
+                    {
+                        i_PlayGame.AiForComputerPlay.SaveToMemory(nextMovesCoordinates[0]);
+                        i_PlayGame.AiForComputerPlay.SaveToMemory(nextMovesCoordinates[1]);
+                    }
+
                 }
             }
              
