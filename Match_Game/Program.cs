@@ -3,16 +3,15 @@ using Match_game_UI;
 
 namespace Match_game
 {
-    class Program
-    {
-
-        public static void Main()
+    internal class Program
+    { 
+        internal static void Main()
         {
             Game newGame = createGame();
             startGame(newGame);
         }
 
-        static Game createGame()
+        private static Game createGame()
         {
             MultiplayerModes multiplayerMode = UI.GetAndCheckMultiPlayerMode();
             int lenOfBoard = UI.GetHeight();
@@ -27,7 +26,7 @@ namespace Match_game
             return new Game(heightOfBoard, lenOfBoard, multiplayerMode, player1Name, player2Name);
         }
 
-        static void startGame(Game playGame)
+        private static void startGame(Game playGame)
         {
             GameBoard gameBoard = playGame.GameBoard;
             UI.ShowGameBoard(gameBoard);
@@ -52,7 +51,7 @@ namespace Match_game
                     UI.ShowGameBoard(gameBoard, 1000);
                 }
 
-                if(playGame.MultiplayerMode != MultiplayerModes.off)
+                if (playGame.MultiplayerMode != MultiplayerModes.off)
                 {
                     playGame.ComputerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
                     playGame.ComputerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
@@ -61,7 +60,7 @@ namespace Match_game
                 if (playGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]))
                 {
                     UI.ShowGameBoard(gameBoard);
-                    if(playGame.MultiplayerMode != MultiplayerModes.off)
+                    if (playGame.MultiplayerMode != MultiplayerModes.off)
                     {
                         playGame.ComputerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
                         playGame.ComputerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
@@ -74,6 +73,7 @@ namespace Match_game
                     UI.ShowGameBoard(gameBoard);
                 }
             }
+             
             if (UI.EndGameAndCheckForRematch(losingPlayer, winningPlayer, winningPlayer == null))
             {
                 Game newGame = new Game(gameBoard.GetHeightOfBoard(), gameBoard.GetLengthOfBoard(), playGame.MultiplayerMode, playGame.Player1.Name, playGame.Player2.Name);
@@ -86,4 +86,3 @@ namespace Match_game
         }
     }
 }
-

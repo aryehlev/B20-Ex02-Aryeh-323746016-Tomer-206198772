@@ -1,8 +1,8 @@
-﻿namespace Match_game_logic
-{
+﻿using System.Collections.Generic;
+using System;
 
-    using System.Collections.Generic;
-    using System;
+namespace Match_game_logic
+{ 
     public enum MultiplayerModes
     {
         off,
@@ -52,7 +52,8 @@
             {
                 for (int j = 0; j < lengthOfBoard; j++)
                 {
-                    Card currentCard = i_GameBoard.GetGameBoard()[i, j];
+                    Card currentCard = i_GameBoard.GetCardByCoordinates(new BoardCoordinates(i, j));
+                    
                     if (!currentCard.Exposed)
                     {
                         possibleCards.Add(currentCard);
@@ -78,8 +79,7 @@
                     }
                 }
             }
-
-            else if (this.m_MultiplayerMode != MultiplayerModes.random && this.m_Memory != null)  // search for a match in memory
+            else if (this.m_MultiplayerMode != MultiplayerModes.random && this.m_Memory != null)
             {
                 this.m_Memory.Remove(firstChoiceCard);  // avoid choosing the same card as a second choice
                 int cardsCheckedForMatch = 0;
@@ -89,6 +89,7 @@
                     {
                         break;
                     }
+                    
                     if (firstChoiceCard.Letter == cardFromMemory.Letter)
                     {
                         // There's a match
@@ -113,6 +114,5 @@
         {
             this.m_Memory.Remove(i_Card);
         }
-
     }
 }

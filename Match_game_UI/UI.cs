@@ -5,7 +5,6 @@ using Match_game_logic;
 namespace Match_game_UI
 {
     public class UI
-
     {
         public static MultiplayerModes GetAndCheckMultiPlayerMode()
         {
@@ -17,6 +16,7 @@ namespace Match_game_UI
                 Console.WriteLine("please enter either 1 or 2");
                 inputFromUser = Console.ReadLine();
             }
+
             if (inputFromUser == "1")
             {
                 Console.WriteLine("Choose Difficaulty Level: random - r, easy - e, normal - n ,hard - h, genius - g");
@@ -30,16 +30,16 @@ namespace Match_game_UI
 
             switch (inputFromUser)
             {
-                case "e":
+                case "r":
                     mode = MultiplayerModes.random;
                     break;
-                case "n":
+                case "e":
                     mode = MultiplayerModes.easy;
                     break;
-                case "h":
+                case "n":
                     mode = MultiplayerModes.normal;
                     break;
-                case "i":
+                case "h":
                     mode = MultiplayerModes.hard;
                     break;
                 case "g":
@@ -61,6 +61,7 @@ namespace Match_game_UI
             Console.WriteLine("please enter desired Length of board either 4, or 6");
             return CheckLengthOrHeight();
         }
+        
         public static string GetNameOfPlayer(int i_PlayerNumber)
         {
             Console.WriteLine($"please enter player {i_PlayerNumber} name");
@@ -75,9 +76,8 @@ namespace Match_game_UI
 
         public static int CheckLengthOrHeight()
         {
-
             string inputFromUserStr = Console.ReadLine();
-            while (inputFromUserStr == null || inputFromUserStr != "4" && inputFromUserStr != "6")
+            while ((inputFromUserStr == null) || (inputFromUserStr != "4" && inputFromUserStr != "6"))
             {
                 Console.WriteLine("please enter either 4 or 6");
                 inputFromUserStr = Console.ReadLine();
@@ -100,11 +100,13 @@ namespace Match_game_UI
                     System.Threading.Thread.Sleep(2000);
                     Environment.Exit(0);
                 }
+
                 if (inputFromUser == null && inputFromUser.Length != 2)
                 {
                     Console.WriteLine("you need to put in 2 coordinates, for example 'A1'");
                     continue;
                 }
+
                 coordinatesFromUser = BoardCoordinates.TryParsePlacement(inputFromUser, out bool wasSuccess);
                 if (!wasSuccess)
                 {
@@ -152,6 +154,7 @@ namespace Match_game_UI
             {
                 Console.Out.WriteLine($"you lose! {winningPlayer.Score}-{losingPlayer.Score} sorry :(");
             }
+
             Console.WriteLine("Rematch? (Y / N)");
             string inputFromUser = Console.ReadLine();
             while (inputFromUser != "Y" && inputFromUser != "N")
@@ -168,7 +171,6 @@ namespace Match_game_UI
             Console.WriteLine("Good Game, See you Next time, press enter to exit...");
             Console.ReadLine();
         }
-
 
         public static void ShowGameBoard(GameBoard i_GameBoard, int i_MillisecondsToWait = 0)
         {
@@ -216,6 +218,4 @@ namespace Match_game_UI
             return strToReturn.ToString();
         }
     }
-
 }
-

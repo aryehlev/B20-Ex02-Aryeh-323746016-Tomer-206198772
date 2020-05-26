@@ -19,6 +19,7 @@
             {
                 return this.m_Exposed;
             }
+
             set
             {
                 this.m_Exposed = value;
@@ -31,6 +32,7 @@
             {
                 return this.m_Letter;
             }
+
             set
             {
                 this.m_Letter = value;
@@ -44,6 +46,5 @@
                 return this.m_CardCoordinates;
             }
         }
-
     }
 }

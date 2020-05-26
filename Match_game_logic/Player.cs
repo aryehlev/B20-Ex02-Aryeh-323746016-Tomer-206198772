@@ -1,13 +1,12 @@
-﻿
-namespace Match_game_logic
+﻿namespace Match_game_logic
 {
     public class Player
     {
         private readonly string m_Name;
-        private bool m_isMyTurn;
-        private int m_Score;
         private readonly bool m_IsComputer;
-
+        private bool m_isMyTurn;
+        private int m_Score; 
+        
         public Player(string i_Name, bool i_IsComputer, bool i_IsMyTurn)
         {
             this.m_Name = i_Name;
@@ -22,6 +21,7 @@ namespace Match_game_logic
             {
                 return this.m_Score;
             }
+
             set
             {
                 this.m_Score = value;
@@ -42,11 +42,11 @@ namespace Match_game_logic
             {
                 return this.m_isMyTurn;
             }
+
             set
             {
                 this.m_isMyTurn = value;
             }
-
         }
 
         public bool IsComputer
