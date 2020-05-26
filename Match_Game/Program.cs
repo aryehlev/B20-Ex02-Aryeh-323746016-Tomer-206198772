@@ -29,7 +29,7 @@ namespace Match_game
 
         static void startGame(Game playGame)
         {
-            AI computerAI = new AI(playGame.GetMultiPlayer());
+            AI computerAI = new AI(playGame.MultiplayerMode);
             GameBoard gameBoard = playGame.GameBoard;
             UI.ShowGameBoard(gameBoard);
             Player winningPlayer, losingPlayer;
@@ -39,10 +39,10 @@ namespace Match_game
                 BoardCoordinates[] nextMovesCoordinates = new BoardCoordinates[2];  // The coordinates of the cards chosen by the player during the current turn
                 if (!currentPlayer.IsComputer)
                 {
-                    nextMovesCoordinates[0] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer.Name);
+                    nextMovesCoordinates[0] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer);
                     playGame.ExposeCard(nextMovesCoordinates[0]);
                     UI.ShowGameBoard(gameBoard);
-                    nextMovesCoordinates[1] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer.Name);
+                    nextMovesCoordinates[1] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer);
                     UI.ShowGameBoard(gameBoard);
                 }
                 else
@@ -52,11 +52,13 @@ namespace Match_game
                     playGame.ExposeCard(nextMovesCoordinates[0]);
                     UI.ShowGameBoard(gameBoard);
                 }
-               // computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                //computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
                 if (playGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]))
                 {
                     UI.ShowGameBoard(gameBoard);
+                    computerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                    computerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
                 }
                 else
                 {
@@ -67,7 +69,7 @@ namespace Match_game
             }
             if (UI.EndGameAndCheckForRematch(losingPlayer, winningPlayer, winningPlayer == null))
             {
-                Game newGame = new Game(gameBoard.GetHeightOfBoard(), gameBoard.GetLengthOfBoard(), playGame.GetMultiPlayer(), playGame.Player1.Name, playGame.Player2.Name);
+                Game newGame = new Game(gameBoard.GetHeightOfBoard(), gameBoard.GetLengthOfBoard(), playGame.MultiplayerMode, playGame.Player1.Name, playGame.Player2.Name);
                 startGame(newGame);
             }
             else

@@ -12,35 +12,38 @@ namespace Match_game_UI
             Console.WriteLine("Hi, welcome to the Matching game!\npress 1 if you would like to play against the Computer and 2 if you would like to play two players");
             MultiplayerModes mode = MultiplayerModes.off;
             string inputFromUser = Console.ReadLine();
-            while(inputFromUser != "1" && inputFromUser != "2")
+            while (inputFromUser != "1" && inputFromUser != "2")
             {
                 Console.WriteLine("please enter either 1 or 2");
                 inputFromUser = Console.ReadLine();
             }
-            if(inputFromUser == "1")
+            if (inputFromUser == "1")
             {
-                Console.WriteLine("Choose Difficaulty Level: easy - e, normal - n, hard - h or impossible - i");
+                Console.WriteLine("Choose Difficaulty Level: easy - e, normal - n, hard - h ,impossible - i, genius - g");
                 inputFromUser = Console.ReadLine();
-                while(inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "h" && inputFromUser != "i")
+                while (inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "h" && inputFromUser != "i" && inputFromUser != "g")
                 {
-                    Console.WriteLine("Choose Difficaulty Level: e , n, hor i, Please use EXACTLY the same letters as written");
+                    Console.WriteLine("Choose Difficaulty Level: e , n or i, Please use EXACTLY the same letters as written");
                     inputFromUser = Console.ReadLine();
                 }
             }
 
-            switch(inputFromUser)
+            switch (inputFromUser)
             {
-                case "easy":
+                case "e":
                     mode = MultiplayerModes.easy;
                     break;
-                case "normal":
+                case "n":
                     mode = MultiplayerModes.normal;
                     break;
-                case "hard":
+                case "h":
                     mode = MultiplayerModes.hard;
                     break;
-                case "impossible":
+                case "i":
                     mode = MultiplayerModes.impossible;
+                    break;
+                case "g":
+                    mode = MultiplayerModes.genius;
                     break;
             }
 
@@ -74,7 +77,7 @@ namespace Match_game_UI
         {
 
             string inputFromUserStr = Console.ReadLine();
-            while(inputFromUserStr == null || inputFromUserStr != "4" && inputFromUserStr != "6")
+            while (inputFromUserStr == null || inputFromUserStr != "4" && inputFromUserStr != "6")
             {
                 Console.WriteLine("please enter either 4 or 6");
                 inputFromUserStr = Console.ReadLine();
@@ -83,9 +86,9 @@ namespace Match_game_UI
             return int.Parse(inputFromUserStr);
         }
 
-        public static BoardCoordinates GetAndCheckCoordinatesInput(Game i_CurrGame, string i_PlayerName)
+        public static BoardCoordinates GetAndCheckCoordinatesInput(Game i_CurrGame, Player i_CurrentPlayer)
         {
-            Console.WriteLine($"{i_PlayerName}, please choose next coordinates");
+            Console.WriteLine($"{i_CurrentPlayer.Name}, you currently have {i_CurrentPlayer.Score} pairs. please choose next coordinates");
             BoardCoordinates coordinatesFromUser = new BoardCoordinates();
             bool isInputValid = false;
             while (!isInputValid)
@@ -97,32 +100,32 @@ namespace Match_game_UI
                     System.Threading.Thread.Sleep(2000);
                     Environment.Exit(0);
                 }
-                if(inputFromUser == null && inputFromUser.Length != 2)
+                if (inputFromUser == null && inputFromUser.Length != 2)
                 {
                     Console.WriteLine("you need to put in 2 coordinates, for example 'A1'");
                     continue;
                 }
                 coordinatesFromUser = BoardCoordinates.TryParsePlacement(inputFromUser, out bool wasSuccess);
-                if(!wasSuccess)
+                if (!wasSuccess)
                 {
                     Console.WriteLine("you need to put in a capital letter and a number bigger than 0, for example 'A1'");
                     continue;
                 }
-                
+
                 int row = coordinatesFromUser.Row;
                 int column = coordinatesFromUser.Column;
                 int lengthOfBoard = i_CurrGame.GameBoard.GetLengthOfBoard();
                 int heightOfBoard = i_CurrGame.GameBoard.GetHeightOfBoard();
-                if(column >= lengthOfBoard)
+                if (column >= lengthOfBoard)
                 {
                     Console.WriteLine($"{(char)('A' + column)} does not fit in board paramaters");
                 }
-                else if(row >= heightOfBoard)
-                { 
+                else if (row >= heightOfBoard)
+                {
                     Console.WriteLine($"{row + 1} does not fit in board paramaters");
                 }
-                else if(i_CurrGame.IsCardAlreadyExposed(coordinatesFromUser))
-                { 
+                else if (i_CurrGame.IsCardExposed(coordinatesFromUser))
+                {
                     Console.WriteLine("The card you picked is already exposed");
                 }
                 else
@@ -140,13 +143,13 @@ namespace Match_game_UI
             {
                 Console.WriteLine("Good Game! It was a tie this time...");
             }
-            else if(!winningPlayer.IsComputer)
+            else if (!winningPlayer.IsComputer)
             {
                 Console.WriteLine($"Congratulations Player {winningPlayer.Name}! You won with {winningPlayer.Score} pairs, {losingPlayer.Name} you got {losingPlayer.Score} pairs right");
             }
             else
             {
-                Console.Out.WriteLine("you lose! sorry :(");
+                Console.Out.WriteLine($"you lose! {winningPlayer.Score}-{losingPlayer.Score} sorry :(");
             }
             Console.WriteLine("Rematch? (Y / N)");
             string inputFromUser = Console.ReadLine();
@@ -161,7 +164,7 @@ namespace Match_game_UI
 
         public static void ExitGame()
         {
-            Console.WriteLine("Good Game, See you Next time, press any key to exit");
+            Console.WriteLine("Good Game, See you Next time, press enter to exit...");
             Console.ReadLine();
         }
 
@@ -185,9 +188,10 @@ namespace Match_game_UI
                 strToReturn.Append($" {i + 1} |");
                 for (int j = 0; j < lenghtOfBoard; j++)
                 {
-                    if (i_GameBoard.GetGameBoard()[i, j].Exposed)
+                    Card currentCard = i_GameBoard.GetCardByCoordinates(new BoardCoordinates(i, j));
+                    if (currentCard.Exposed)
                     {
-                        strToReturn.Append($"  {i_GameBoard.GetGameBoard()[i, j].Letter}  |");
+                        strToReturn.Append($"  {currentCard.Letter}  |");
                     }
                     else
                     {

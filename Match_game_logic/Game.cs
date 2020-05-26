@@ -54,6 +54,11 @@ namespace Match_game_logic
             return wasSuccsesfulGuess;
         }
 
+        public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
+        {
+            return this.m_GameBoard.IsCardExposed(i_boardCoordinates);
+        }
+
 
         public bool IsGameOver(out Player o_WinningPlayer, out Player o_LosingPlayer)
         {
@@ -63,8 +68,6 @@ namespace Match_game_logic
             if (this.m_GameBoard.IsBoardFullyExposed())
             {
                 isGameOver = true;
-                o_WinningPlayer = null;
-                o_LosingPlayer = null;
                 if (Player1.Score > Player2.Score)
                 {
                     o_WinningPlayer = Player1;
@@ -79,37 +82,14 @@ namespace Match_game_logic
             return isGameOver;
         }
 
-        public bool IsCardAlreadyExposed(BoardCoordinates i_boardCoordinates)
+        public int GetPlayerScore(int i_PlayerNumber)
         {
-            return this.m_GameBoard.IsCardExposed(i_boardCoordinates);
-        }
-
-        public MultiplayerModes GetMultiPlayer()
-        {
-            return this.m_MultiPlayerMode;
+            return i_PlayerNumber == 1 ? this.Player1.Score : this.Player2.Score;
         }
 
         public Player WhosTurnIsIt()
         {
             return Player1.IsMyTurn ? Player1 : Player2;
-        }
-
-        public Player WhichPlayerWon(out Player o_LoosingPlayer, out bool o_WasTie)
-        {
-            o_WasTie = Player1.Score == Player2.Score;
-            Player winningPlayer = null;
-            if (Player1.Score >= Player2.Score)
-            {
-                winningPlayer = Player1;
-                o_LoosingPlayer = Player2;
-            }
-            else
-            {
-                winningPlayer = Player2;
-                o_LoosingPlayer = Player1;
-            }
-
-            return winningPlayer;
         }
 
         public Player Player1
@@ -141,6 +121,14 @@ namespace Match_game_logic
             get
             {
                 return this.m_GameBoard;
+            }
+        }
+
+        public MultiplayerModes MultiplayerMode
+        {
+            get
+            {
+                return this.m_MultiPlayerMode;
             }
         }
     }

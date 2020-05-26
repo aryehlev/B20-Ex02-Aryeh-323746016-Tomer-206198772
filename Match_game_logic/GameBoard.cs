@@ -17,30 +17,6 @@ namespace Match_game_logic
             initGameBoard();
         }
 
-        public int NumberOfExposedPairs
-        {
-            get
-            {
-                return this.m_numberOfExposedPairs;
-            }
-            set
-            {
-                this.m_numberOfExposedPairs = value;
-            }
-        }
-
-        public Card CardExposedByPlayer
-        {
-            get
-            {
-                return this.m_cardTemporaryExposedByPlayer;
-            }
-            set
-            {
-                this.m_cardTemporaryExposedByPlayer = value;
-            }
-        }
-
         private void initGameBoard()
         {
             int LengthOfBoard = this.GetLengthOfBoard();
@@ -69,9 +45,11 @@ namespace Match_game_logic
                 for (int j = 0; j < LengthOfBoard; j++)
                 {
                     this.m_GameBoard[i, j] = new Card(cardsPossibleLetters[i * LengthOfBoard + j], new BoardCoordinates(i, j));
-                    //this.m_GameBoard[i, j] = new Card('A');
+                    //this.m_GameBoard[i, j] = new Card('A', new BoardCoordinates(i, j));
                 }
             }
+            //this.m_GameBoard[0, 0] = new Card('B', new BoardCoordinates(0, 0));
+            //this.m_GameBoard[3, 3] = new Card('B', new BoardCoordinates(3, 3));
         }
         public void ExposeCard(BoardCoordinates i_boardCoordinates)
         { 
@@ -102,12 +80,22 @@ namespace Match_game_logic
 
         public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
         {
-             return this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column].Exposed;
+             return this.GetCardByCoordinates(i_boardCoordinates).Exposed;
         }
 
         public bool IsBoardFullyExposed()
         {
             return this.NumberOfExposedPairs == (this.GetHeightOfBoard() * this.GetLengthOfBoard()) /  2;
+        }
+
+        public Card GetCardByCoordinates(BoardCoordinates i_CardCoordinates)
+        {
+            return this.m_GameBoard[i_CardCoordinates.Row, i_CardCoordinates.Column];
+        }
+
+        public Card[,] GetGameBoard()
+        {
+            return this.m_GameBoard;
         }
 
         public int GetLengthOfBoard()
@@ -120,14 +108,28 @@ namespace Match_game_logic
             return this.m_GameBoard.GetLength(0);
         }
 
-        public Card GetCardByCoordinates(BoardCoordinates i_CardCoordinates)
+        public int NumberOfExposedPairs
         {
-            return this.m_GameBoard[i_CardCoordinates.Row, i_CardCoordinates.Column];
+            get
+            {
+                return this.m_numberOfExposedPairs;
+            }
+            set
+            {
+                this.m_numberOfExposedPairs = value;
+            }
         }
 
-        public Card[,] GetGameBoard()
+        public Card CardExposedByPlayer
         {
-            return this.m_GameBoard;
+            get
+            {
+                return this.m_cardTemporaryExposedByPlayer;
+            }
+            set
+            {
+                this.m_cardTemporaryExposedByPlayer = value;
+            }
         }
     }
 

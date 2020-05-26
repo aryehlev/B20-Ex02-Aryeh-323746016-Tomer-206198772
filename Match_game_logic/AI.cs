@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace Match_game_logic
 {
     public enum MultiplayerModes
@@ -10,20 +9,37 @@ namespace Match_game_logic
         easy,
         normal,
         hard,
-        impossible
+        impossible,
+        genius
     }
 
     public class AI
     {
-        private readonly MultiplayerModes m_MultiplayerMode;
-        private List<Card> m_Memory;
         public const int k_NormalMemory = 2;
         public const int k_HardMemory = 4;
+        private readonly MultiplayerModes m_MultiplayerMode;
+        private List<Card> m_Memory;
+        private int m_MemoryDepth;
 
         public AI(MultiplayerModes i_MultiplayerMode)
         {
             this.m_MultiplayerMode = i_MultiplayerMode;
             this.m_Memory = new List<Card>();
+            switch (this.m_MultiplayerMode)
+            {
+                case MultiplayerModes.normal:
+                    this.m_MemoryDepth = k_NormalMemory;
+                    break;
+                case MultiplayerModes.hard:
+                    this.m_MemoryDepth = k_HardMemory;
+                    break;
+                case MultiplayerModes.impossible:
+                    this.m_MemoryDepth = int.MaxValue;
+                    break;
+                default:
+                    this.m_MemoryDepth = 0;
+                    break;
+            }
         }
 
         public BoardCoordinates[] GetCoordinatesForNextMove(GameBoard i_GameBoard)
@@ -51,26 +67,25 @@ namespace Match_game_logic
             int secondCardIdx = rnd.Next(0, possibleCards.Count);
             Card secondChoiceCard = possibleCards[secondCardIdx];
 
-            if (this.m_MultiplayerMode != MultiplayerModes.easy && this.m_Memory != null)  // search for a match in memory
+            if (this.m_MultiplayerMode == MultiplayerModes.genius)
             {
-                //this.m_Memory.Remove(firstChoiceCard);  // avoid choosing the same card as a second choice
-                int memoryDepth = 0;
-                switch (this.m_MultiplayerMode)
+                foreach (Card cardFromPossibleCards in possibleCards)
                 {
-                    case MultiplayerModes.normal:
-                        memoryDepth = k_NormalMemory;
-                        break;
-                    case MultiplayerModes.hard:
-                        memoryDepth = k_HardMemory;
-                        break;
-                    case MultiplayerModes.impossible:
-                        memoryDepth = i_GameBoard.GetLengthOfBoard() * i_GameBoard.GetHeightOfBoard();
-                        break;
+                    if (firstChoiceCard.Letter == cardFromPossibleCards.Letter)
+                    {
+                        // There's a match
+                        secondChoiceCard = cardFromPossibleCards;
+                    }
                 }
+            }
+
+            else if (this.m_MultiplayerMode != MultiplayerModes.easy && this.m_Memory != null)  // search for a match in memory
+            {
+                this.m_Memory.Remove(firstChoiceCard);  // avoid choosing the same card as a second choice
                 int cardsCheckedForMatch = 0;
                 foreach (Card cardFromMemory in this.m_Memory)
                 {
-                    if (cardsCheckedForMatch > memoryDepth)
+                    if (cardsCheckedForMatch > this.m_MemoryDepth)
                     {
                         break;
                     }
@@ -82,8 +97,8 @@ namespace Match_game_logic
 
                     cardsCheckedForMatch++;
                 }
-                this.m_Memory.Remove(secondChoiceCard);
 
+                this.m_Memory.Remove(secondChoiceCard);
             }
 
             return new BoardCoordinates[2] { firstChoiceCard.CardCoordinates, secondChoiceCard.CardCoordinates };
@@ -92,6 +107,11 @@ namespace Match_game_logic
         public void SaveToMemory(Card i_Card)
         {
             this.m_Memory.Insert(0, i_Card);
+        }
+
+        public void RemoveFromMemory(Card i_Card)
+        {
+            this.m_Memory.Remove(i_Card);
         }
 
     }
