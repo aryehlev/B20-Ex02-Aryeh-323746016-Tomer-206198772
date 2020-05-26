@@ -19,7 +19,7 @@ namespace Match_game_UI
             }
             if (inputFromUser == "1")
             {
-                Console.WriteLine("Choose Difficaulty Level: easy - e, normal - n, hard - h ,impossible - i, genius - g");
+                Console.WriteLine("Choose Difficaulty Level: random - r, easy - e, normal - n ,hard - h, genius - g");
                 inputFromUser = Console.ReadLine();
                 while (inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "h" && inputFromUser != "i" && inputFromUser != "g")
                 {
@@ -31,16 +31,16 @@ namespace Match_game_UI
             switch (inputFromUser)
             {
                 case "e":
-                    mode = MultiplayerModes.easy;
+                    mode = MultiplayerModes.random;
                     break;
                 case "n":
-                    mode = MultiplayerModes.normal;
+                    mode = MultiplayerModes.easy;
                     break;
                 case "h":
-                    mode = MultiplayerModes.hard;
+                    mode = MultiplayerModes.normal;
                     break;
                 case "i":
-                    mode = MultiplayerModes.impossible;
+                    mode = MultiplayerModes.hard;
                     break;
                 case "g":
                     mode = MultiplayerModes.genius;
@@ -112,10 +112,11 @@ namespace Match_game_UI
                     continue;
                 }
 
+                GameBoard gameBoard = i_CurrGame.GameBoard;
                 int row = coordinatesFromUser.Row;
                 int column = coordinatesFromUser.Column;
-                int lengthOfBoard = i_CurrGame.GameBoard.GetLengthOfBoard();
-                int heightOfBoard = i_CurrGame.GameBoard.GetHeightOfBoard();
+                int lengthOfBoard = gameBoard.GetLengthOfBoard();
+                int heightOfBoard = gameBoard.GetHeightOfBoard();
                 if (column >= lengthOfBoard)
                 {
                     Console.WriteLine($"{(char)('A' + column)} does not fit in board paramaters");
@@ -124,7 +125,7 @@ namespace Match_game_UI
                 {
                     Console.WriteLine($"{row + 1} does not fit in board paramaters");
                 }
-                else if (i_CurrGame.IsCardExposed(coordinatesFromUser))
+                else if (gameBoard.IsCardExposed(coordinatesFromUser))
                 {
                     Console.WriteLine("The card you picked is already exposed");
                 }

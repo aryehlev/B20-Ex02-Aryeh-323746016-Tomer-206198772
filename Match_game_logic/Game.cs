@@ -11,6 +11,7 @@ namespace Match_game_logic
         private Player m_player1;
         private Player m_player2;
         private MultiplayerModes m_MultiPlayerMode;
+        private AI m_ComputerAI;
 
         public Game(
             int i_NumberOfRows,
@@ -24,11 +25,11 @@ namespace Match_game_logic
             this.m_player1 = new Player(i_NameOfPlayer1, false, true);
             this.m_player2 = new Player(i_NameOfPlayer2, i_MultiPlayerMode != MultiplayerModes.off, false);
             this.m_MultiPlayerMode = i_MultiPlayerMode;
-        }
-
-        public void ExposeCard(BoardCoordinates i_boardCoordinates)
-        {
-            this.m_GameBoard.ExposeCard(i_boardCoordinates);
+            this.m_ComputerAI = null;
+            if(i_MultiPlayerMode != MultiplayerModes.off)
+            {
+                this.m_ComputerAI = new AI(i_MultiPlayerMode);
+            }
         }
 
         public bool GuessCardAndUpdateScores(BoardCoordinates i_boardCoordinates)
@@ -36,7 +37,7 @@ namespace Match_game_logic
             bool wasSuccsesfulGuess = this.m_GameBoard.GuessCard(i_boardCoordinates);
             if (wasSuccsesfulGuess)
             {
-                if(m_player1.IsMyTurn)
+                if (m_player1.IsMyTurn)
                 {
                     this.m_player1.Score++;
                 }
@@ -53,12 +54,6 @@ namespace Match_game_logic
 
             return wasSuccsesfulGuess;
         }
-
-        public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
-        {
-            return this.m_GameBoard.IsCardExposed(i_boardCoordinates);
-        }
-
 
         public bool IsGameOver(out Player o_WinningPlayer, out Player o_LosingPlayer)
         {
@@ -129,6 +124,14 @@ namespace Match_game_logic
             get
             {
                 return this.m_MultiPlayerMode;
+            }
+        }
+
+        public AI ComputerAI
+        {
+            get
+            {
+                return this.m_ComputerAI;
             }
         }
     }

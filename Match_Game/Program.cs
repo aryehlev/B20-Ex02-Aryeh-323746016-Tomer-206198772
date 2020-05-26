@@ -29,7 +29,6 @@ namespace Match_game
 
         static void startGame(Game playGame)
         {
-            AI computerAI = new AI(playGame.MultiplayerMode);
             GameBoard gameBoard = playGame.GameBoard;
             UI.ShowGameBoard(gameBoard);
             Player winningPlayer, losingPlayer;
@@ -40,25 +39,33 @@ namespace Match_game
                 if (!currentPlayer.IsComputer)
                 {
                     nextMovesCoordinates[0] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer);
-                    playGame.ExposeCard(nextMovesCoordinates[0]);
+                    gameBoard.ExposeCard(nextMovesCoordinates[0]);
                     UI.ShowGameBoard(gameBoard);
                     nextMovesCoordinates[1] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer);
                     UI.ShowGameBoard(gameBoard);
                 }
                 else
                 {
+                    nextMovesCoordinates = playGame.ComputerAI.GetCoordinatesForNextMove(gameBoard);
                     UI.ShowComputerIsPlaying();
-                    nextMovesCoordinates = computerAI.GetCoordinatesForNextMove(gameBoard);
-                    playGame.ExposeCard(nextMovesCoordinates[0]);
-                    UI.ShowGameBoard(gameBoard);
+                    gameBoard.ExposeCard(nextMovesCoordinates[0]);
+                    UI.ShowGameBoard(gameBoard, 1000);
                 }
-                computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                computerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+
+                if(playGame.MultiplayerMode != MultiplayerModes.off)
+                {
+                    playGame.ComputerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                    playGame.ComputerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                }
+
                 if (playGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]))
                 {
                     UI.ShowGameBoard(gameBoard);
-                    computerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                    computerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                    if(playGame.MultiplayerMode != MultiplayerModes.off)
+                    {
+                        playGame.ComputerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                        playGame.ComputerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                    }
                 }
                 else
                 {

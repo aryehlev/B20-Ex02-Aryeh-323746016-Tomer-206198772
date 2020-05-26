@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Match_game_logic
+﻿namespace Match_game_logic
 {
+
+    using System.Collections.Generic;
+    using System;
     public enum MultiplayerModes
     {
         off,
+        random,
         easy,
         normal,
         hard,
-        impossible,
         genius
     }
 
     public class AI
     {
-        public const int k_NormalMemory = 2;
-        public const int k_HardMemory = 4;
+        public const int k_EasyMemory = 2;
+        public const int k_MediumMemory = 4;
         private readonly MultiplayerModes m_MultiplayerMode;
         private List<Card> m_Memory;
         private int m_MemoryDepth;
@@ -27,13 +27,13 @@ namespace Match_game_logic
             this.m_Memory = new List<Card>();
             switch (this.m_MultiplayerMode)
             {
+                case MultiplayerModes.easy:
+                    this.m_MemoryDepth = k_EasyMemory;
+                    break;
                 case MultiplayerModes.normal:
-                    this.m_MemoryDepth = k_NormalMemory;
+                    this.m_MemoryDepth = k_MediumMemory;
                     break;
                 case MultiplayerModes.hard:
-                    this.m_MemoryDepth = k_HardMemory;
-                    break;
-                case MultiplayerModes.impossible:
                     this.m_MemoryDepth = int.MaxValue;
                     break;
                 default:
@@ -79,7 +79,7 @@ namespace Match_game_logic
                 }
             }
 
-            else if (this.m_MultiplayerMode != MultiplayerModes.easy && this.m_Memory != null)  // search for a match in memory
+            else if (this.m_MultiplayerMode != MultiplayerModes.random && this.m_Memory != null)  // search for a match in memory
             {
                 this.m_Memory.Remove(firstChoiceCard);  // avoid choosing the same card as a second choice
                 int cardsCheckedForMatch = 0;

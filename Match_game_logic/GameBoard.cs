@@ -7,12 +7,12 @@ namespace Match_game_logic
     {
         private Card[,] m_GameBoard;
         private int m_numberOfExposedPairs;
-        private Card m_cardTemporaryExposedByPlayer;
+        private Card m_CardTemporaryTemporaryExposedByPlayer;
 
         public GameBoard(int i_NumberOfRows, int i_NumberOfColumns)
         {
             this.m_numberOfExposedPairs = 0;
-            this.m_cardTemporaryExposedByPlayer = null;
+            this.m_CardTemporaryTemporaryExposedByPlayer = null;
             this.m_GameBoard = new Card[i_NumberOfRows, i_NumberOfColumns];
             initGameBoard();
         }
@@ -53,8 +53,8 @@ namespace Match_game_logic
         }
         public void ExposeCard(BoardCoordinates i_boardCoordinates)
         { 
-            this.m_cardTemporaryExposedByPlayer = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
-            this.m_cardTemporaryExposedByPlayer.Exposed = true;
+            this.m_CardTemporaryTemporaryExposedByPlayer = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
+            this.m_CardTemporaryTemporaryExposedByPlayer.Exposed = true;
         }
 
         public bool GuessCard(BoardCoordinates i_boardCoordinates)
@@ -62,7 +62,7 @@ namespace Match_game_logic
             bool guessWasCorrect = false;
             Card guessedCard = this.GetCardByCoordinates(i_boardCoordinates);
             guessedCard.Exposed = true;
-            if (m_cardTemporaryExposedByPlayer.Letter == guessedCard.Letter)
+            if (m_CardTemporaryTemporaryExposedByPlayer.Letter == guessedCard.Letter)
             {
                 m_numberOfExposedPairs += 1;
                 guessWasCorrect = true;
@@ -75,7 +75,7 @@ namespace Match_game_logic
         {
             Card wronglyGueesedCard = this.GetCardByCoordinates(i_GuessedCardCoordinates);
             wronglyGueesedCard.Exposed = false;
-            this.m_cardTemporaryExposedByPlayer.Exposed = false;
+            this.m_CardTemporaryTemporaryExposedByPlayer.Exposed = false;
         }
 
         public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
@@ -120,15 +120,15 @@ namespace Match_game_logic
             }
         }
 
-        public Card CardExposedByPlayer
+        public Card CardTemporaryExposedByPlayer
         {
             get
             {
-                return this.m_cardTemporaryExposedByPlayer;
+                return this.m_CardTemporaryTemporaryExposedByPlayer;
             }
             set
             {
-                this.m_cardTemporaryExposedByPlayer = value;
+                this.m_CardTemporaryTemporaryExposedByPlayer = value;
             }
         }
     }
