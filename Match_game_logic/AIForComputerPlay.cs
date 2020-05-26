@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Match_game_logic
 { 
@@ -17,8 +18,8 @@ namespace Match_game_logic
     {
         public const int k_EasyMemory = 2;
         public const int k_MediumMemory = 4;
+        private List<Card> r_Memory;
         private readonly eMultiplayerModes r_MultiplayerMode;
-        private readonly List<Card> r_Memory;
         private readonly int r_MemoryDepth;
 
         public AiForComputerPlay(eMultiplayerModes i_MultiplayerMode)
@@ -52,7 +53,7 @@ namespace Match_game_logic
                 for (int j = 0; j < lengthOfBoard; j++)
                 {
                     Card currentCard = i_GameBoard.GetCardByCoordinates(new BoardCoordinates(i, j));
-                    
+
                     if (!currentCard.Exposed)
                     {
                         possibleCards.Add(currentCard);
@@ -62,10 +63,10 @@ namespace Match_game_logic
 
             Random rnd = new Random();
             int firstCardIdx = rnd.Next(0, possibleCards.Count);
-            Card firstChoiceCard = possibleCards[firstCardIdx];
+            Card firstChoiceCard = possibleCards.ElementAt(firstCardIdx);
             possibleCards.Remove(firstChoiceCard);
             int secondCardIdx = rnd.Next(0, possibleCards.Count);
-            Card secondChoiceCard = possibleCards[secondCardIdx];
+            Card secondChoiceCard = possibleCards.ElementAt(secondCardIdx);
 
             if (this.r_MultiplayerMode == eMultiplayerModes.Genius)
             {
@@ -73,12 +74,11 @@ namespace Match_game_logic
                 {
                     if (firstChoiceCard.Letter == cardFromPossibleCards.Letter)
                     {
-                        // There's a match
                         secondChoiceCard = cardFromPossibleCards;
                     }
                 }
             }
-            else if (this.r_MultiplayerMode != eMultiplayerModes.Random && this.r_Memory != null)
+            else if (this.r_MultiplayerMode != eMultiplayerModes.Random && this.r_Memory.Any())
             {
                 this.r_Memory.Remove(firstChoiceCard);  // avoid choosing the same card as a second choice
                 int cardsCheckedForMatch = 0;
@@ -91,7 +91,6 @@ namespace Match_game_logic
                     
                     if (firstChoiceCard.Letter == cardFromMemory.Letter)
                     {
-                        // There's a match
                         secondChoiceCard = cardFromMemory;
                     }
 

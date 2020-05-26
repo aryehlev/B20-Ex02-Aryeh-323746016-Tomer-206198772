@@ -4,7 +4,7 @@
     {
         private readonly GameBoard r_GameBoard;
         private readonly eMultiplayerModes r_MultiPlayerMode;
-        private readonly AiForComputerPlay r_ComputerAiForComputerPlay;
+        private readonly AiForComputerPlay r_ComputerAi;
         private Player m_Player1;
         private Player m_Player2; 
         
@@ -19,10 +19,10 @@
             this.m_Player1 = new Player(i_NameOfPlayer1, false, true);
             this.m_Player2 = new Player(i_NameOfPlayer2, i_MultiPlayerMode != eMultiplayerModes.Off, false);
             this.r_MultiPlayerMode = i_MultiPlayerMode;
-            this.r_ComputerAiForComputerPlay = null;
+            this.r_ComputerAi = null;
             if (i_MultiPlayerMode != eMultiplayerModes.Off)
             {
-                this.r_ComputerAiForComputerPlay = new AiForComputerPlay(i_MultiPlayerMode);
+                this.r_ComputerAi = new AiForComputerPlay(i_MultiPlayerMode);
             }
         } 
         
@@ -68,11 +68,11 @@
             }
         }
 
-        public AiForComputerPlay ComputerAiForComputerPlay
+        public AiForComputerPlay AiForComputerPlay
         {
             get
             {
-                return this.r_ComputerAiForComputerPlay;
+                return this.r_ComputerAi;
             }
         } 
         

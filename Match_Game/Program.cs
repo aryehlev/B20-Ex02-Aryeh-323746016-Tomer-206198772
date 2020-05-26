@@ -45,7 +45,7 @@ namespace Match_game
                 }
                 else
                 {
-                    nextMovesCoordinates = i_PlayGame.ComputerAiForComputerPlay.GetCoordinatesForNextMove(gameBoard);
+                    nextMovesCoordinates = i_PlayGame.AiForComputerPlay.GetCoordinatesForNextMove(gameBoard);
                     UserInterface.ShowComputerIsPlaying();
                     gameBoard.ExposeCard(nextMovesCoordinates[0]);
                     UserInterface.ShowGameBoard(gameBoard, 1000);
@@ -53,8 +53,8 @@ namespace Match_game
 
                 if (i_PlayGame.MultiplayerMode != eMultiplayerModes.Off)
                 {
-                    i_PlayGame.ComputerAiForComputerPlay.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                    i_PlayGame.ComputerAiForComputerPlay.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                    i_PlayGame.AiForComputerPlay.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                    i_PlayGame.AiForComputerPlay.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
                 }
 
                 if (i_PlayGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]))
@@ -62,8 +62,8 @@ namespace Match_game
                     UserInterface.ShowGameBoard(gameBoard);
                     if (i_PlayGame.MultiplayerMode != eMultiplayerModes.Off)
                     {
-                        i_PlayGame.ComputerAiForComputerPlay.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                        i_PlayGame.ComputerAiForComputerPlay.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                        i_PlayGame.AiForComputerPlay.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                        i_PlayGame.AiForComputerPlay.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
                     }
                 }
                 else

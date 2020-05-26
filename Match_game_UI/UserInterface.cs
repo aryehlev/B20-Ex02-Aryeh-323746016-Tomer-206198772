@@ -23,7 +23,7 @@ namespace Match_game_UI
                 inputFromUser = Console.ReadLine();
                 while (inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "h" && inputFromUser != "i" && inputFromUser != "g")
                 {
-                    Console.WriteLine("Choose Difficulty Level: e , n or i, Please use EXACTLY the same letters as written");
+                    Console.WriteLine("Choose Difficulty Level: r, e , n, h or g, Please use EXACTLY the same letters as written");
                     inputFromUser = Console.ReadLine();
                 }
             }
