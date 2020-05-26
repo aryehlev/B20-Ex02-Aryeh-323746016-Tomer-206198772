@@ -4,12 +4,12 @@ using Match_game_logic;
 
 namespace Match_game_UI
 {
-    public class UI
+    public class UserInterface
     {
-        public static MultiplayerModes GetAndCheckMultiPlayerMode()
+        public static eMultiplayerModes GetAndCheckMultiPlayerMode()
         {
             Console.WriteLine("Hi, welcome to the Matching game!\npress 1 if you would like to play against the Computer and 2 if you would like to play two players");
-            MultiplayerModes mode = MultiplayerModes.off;
+            eMultiplayerModes mode = eMultiplayerModes.Off;
             string inputFromUser = Console.ReadLine();
             while (inputFromUser != "1" && inputFromUser != "2")
             {
@@ -19,11 +19,11 @@ namespace Match_game_UI
 
             if (inputFromUser == "1")
             {
-                Console.WriteLine("Choose Difficaulty Level: random - r, easy - e, normal - n ,hard - h, genius - g");
+                Console.WriteLine("Choose Difficulty Level: Random - r, Easy - e, Normal - n ,Hard - h, Genius - g");
                 inputFromUser = Console.ReadLine();
                 while (inputFromUser != "e" && inputFromUser != "n" && inputFromUser != "h" && inputFromUser != "i" && inputFromUser != "g")
                 {
-                    Console.WriteLine("Choose Difficaulty Level: e , n or i, Please use EXACTLY the same letters as written");
+                    Console.WriteLine("Choose Difficulty Level: e , n or i, Please use EXACTLY the same letters as written");
                     inputFromUser = Console.ReadLine();
                 }
             }
@@ -31,19 +31,19 @@ namespace Match_game_UI
             switch (inputFromUser)
             {
                 case "r":
-                    mode = MultiplayerModes.random;
+                    mode = eMultiplayerModes.Random;
                     break;
                 case "e":
-                    mode = MultiplayerModes.easy;
+                    mode = eMultiplayerModes.Easy;
                     break;
                 case "n":
-                    mode = MultiplayerModes.normal;
+                    mode = eMultiplayerModes.Normal;
                     break;
                 case "h":
-                    mode = MultiplayerModes.hard;
+                    mode = eMultiplayerModes.Hard;
                     break;
                 case "g":
-                    mode = MultiplayerModes.genius;
+                    mode = eMultiplayerModes.Genius;
                     break;
             }
 
@@ -101,7 +101,7 @@ namespace Match_game_UI
                     Environment.Exit(0);
                 }
 
-                if (inputFromUser == null && inputFromUser.Length != 2)
+                if (inputFromUser == null || inputFromUser.Length != 2)
                 {
                     Console.WriteLine("you need to put in 2 coordinates, for example 'A1'");
                     continue;
@@ -121,11 +121,11 @@ namespace Match_game_UI
                 int heightOfBoard = gameBoard.GetHeightOfBoard();
                 if (column >= lengthOfBoard)
                 {
-                    Console.WriteLine($"{(char)('A' + column)} does not fit in board paramaters");
+                    Console.WriteLine($"{(char)('A' + column)} does not fit in board parameters");
                 }
                 else if (row >= heightOfBoard)
                 {
-                    Console.WriteLine($"{row + 1} does not fit in board paramaters");
+                    Console.WriteLine($"{row + 1} does not fit in board parameters");
                 }
                 else if (gameBoard.IsCardExposed(coordinatesFromUser))
                 {
@@ -140,19 +140,19 @@ namespace Match_game_UI
             return coordinatesFromUser;
         }
 
-        public static bool EndGameAndCheckForRematch(Player losingPlayer, Player winningPlayer, bool wasTie)
+        public static bool EndGameAndCheckForRematch(Player i_LosingPlayer, Player i_WinningPlayer, bool i_WasTie)
         {
-            if (wasTie)
+            if (i_WasTie)
             {
                 Console.WriteLine("Good Game! It was a tie this time...");
             }
-            else if (!winningPlayer.IsComputer)
+            else if (!i_WinningPlayer.IsComputer)
             {
-                Console.WriteLine($"Congratulations Player {winningPlayer.Name}! You won with {winningPlayer.Score} pairs, {losingPlayer.Name} you got {losingPlayer.Score} pairs right");
+                Console.WriteLine($"Congratulations Player {i_WinningPlayer.Name}! You won with {i_WinningPlayer.Score} pairs, {i_LosingPlayer.Name} you got {i_LosingPlayer.Score} pairs right");
             }
             else
             {
-                Console.Out.WriteLine($"you lose! {winningPlayer.Score}-{losingPlayer.Score} sorry :(");
+                Console.Out.WriteLine($"you lose! {i_WinningPlayer.Score}-{i_LosingPlayer.Score} sorry :(");
             }
 
             Console.WriteLine("Rematch? (Y / N)");
@@ -176,44 +176,37 @@ namespace Match_game_UI
         {
             Ex02.ConsoleUtils.Screen.Clear();
             int heightOfBoard = i_GameBoard.GetHeightOfBoard();
-            int lenghtOfBoard = i_GameBoard.GetLengthOfBoard();
+            int lengthOfBoard = i_GameBoard.GetLengthOfBoard();
             StringBuilder strToReturn = new StringBuilder(" ");
             char columnIndexChar = 'A';
-            for (int i = 0; i < lenghtOfBoard; i++)
+            for (int i = 0; i < lengthOfBoard; i++)
             {
                 strToReturn.Append($"     {columnIndexChar}");
                 columnIndexChar++;
             }
 
-            strToReturn.Append(getSeperationRow(lenghtOfBoard));
+            strToReturn.Append(getSeparationRow(lengthOfBoard));
             for (int i = 0; i < heightOfBoard; i++)
             {
                 strToReturn.Append($" {i + 1} |");
-                for (int j = 0; j < lenghtOfBoard; j++)
+                for (int j = 0; j < lengthOfBoard; j++)
                 {
                     Card currentCard = i_GameBoard.GetCardByCoordinates(new BoardCoordinates(i, j));
-                    if (currentCard.Exposed)
-                    {
-                        strToReturn.Append($"  {currentCard.Letter}  |");
-                    }
-                    else
-                    {
-                        strToReturn.Append($"     |");
-                    }
+                    strToReturn.Append(currentCard.Exposed ? $"  {currentCard.Letter}  |" : "     |");
                 }
 
-                strToReturn.Append(getSeperationRow(lenghtOfBoard));
+                strToReturn.Append(getSeparationRow(lengthOfBoard));
             }
 
             Console.Out.WriteLine(strToReturn);
             System.Threading.Thread.Sleep(i_MillisecondsToWait);
         }
 
-        private static string getSeperationRow(int i_columnsNumber)
+        private static string getSeparationRow(int i_ColumnsNumber)
         {
             StringBuilder strToReturn = new StringBuilder();
             strToReturn.Append("\n    ");
-            strToReturn.Append('=', i_columnsNumber * 6);
+            strToReturn.Append('=', i_ColumnsNumber * 6);
             strToReturn.Append("\n");
             return strToReturn.ToString();
         }

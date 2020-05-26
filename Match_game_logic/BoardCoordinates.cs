@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Match_game_logic
+﻿namespace Match_game_logic
 {
     public struct BoardCoordinates
     {
@@ -39,13 +37,13 @@ namespace Match_game_logic
             }
         }
 
-        public static BoardCoordinates TryParsePlacement(string i_placement, out bool o_WasSuccess)
+        public static BoardCoordinates TryParsePlacement(string i_Placement, out bool o_WasSuccess)
         {
             BoardCoordinates newBoardCoordinates = new BoardCoordinates();
             o_WasSuccess = false;
-            if (char.IsUpper(i_placement[0]) && char.IsDigit(i_placement[1]) && i_placement[1] != '0')
+            if (char.IsUpper(i_Placement[0]) && char.IsDigit(i_Placement[1]) && i_Placement[1] != '0')
             {
-                newBoardCoordinates = new BoardCoordinates(i_placement[1] - '0' - 1, i_placement[0] - 'A');
+                newBoardCoordinates = new BoardCoordinates(i_Placement[1] - '0' - 1, i_Placement[0] - 'A');
                 o_WasSuccess = true;
             }
 

@@ -39,7 +39,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI.cs" />
+    <Compile Include="AiForComputerPlay.cs" />
     <Compile Include="BoardCoordinates.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="Game.cs" />

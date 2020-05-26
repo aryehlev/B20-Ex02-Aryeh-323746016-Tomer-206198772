@@ -2,15 +2,15 @@
 {
     public class Card
     {
+        private readonly BoardCoordinates r_CardCoordinates;
         private char m_Letter;
-        private bool m_Exposed;
-        private BoardCoordinates m_CardCoordinates;
-
+        private bool m_Exposed; 
+        
         public Card(char i_Letter, BoardCoordinates i_CardCoordinates)
         {
             this.m_Letter = i_Letter;
             this.m_Exposed = false;
-            this.m_CardCoordinates = i_CardCoordinates;
+            this.r_CardCoordinates = i_CardCoordinates;
         }
 
         public bool Exposed
@@ -43,7 +43,7 @@
         {
             get
             {
-                return this.m_CardCoordinates;
+                return this.r_CardCoordinates;
             }
         }
     }

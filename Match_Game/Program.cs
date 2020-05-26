@@ -13,75 +13,75 @@ namespace Match_game
 
         private static Game createGame()
         {
-            MultiplayerModes multiplayerMode = UI.GetAndCheckMultiPlayerMode();
-            int lenOfBoard = UI.GetHeight();
-            int heightOfBoard = UI.GetLength();
-            string player1Name = UI.GetNameOfPlayer(1);
+            eMultiplayerModes multiplayerMode = UserInterface.GetAndCheckMultiPlayerMode();
+            int lenOfBoard = UserInterface.GetHeight();
+            int heightOfBoard = UserInterface.GetLength();
+            string player1Name = UserInterface.GetNameOfPlayer(1);
             string player2Name = "Computer";
-            if (multiplayerMode == MultiplayerModes.off)
+            if (multiplayerMode == eMultiplayerModes.Off)
             {
-                player2Name = UI.GetNameOfPlayer(2);
+                player2Name = UserInterface.GetNameOfPlayer(2);
             }
 
             return new Game(heightOfBoard, lenOfBoard, multiplayerMode, player1Name, player2Name);
         }
 
-        private static void startGame(Game playGame)
+        private static void startGame(Game i_PlayGame)
         {
-            GameBoard gameBoard = playGame.GameBoard;
-            UI.ShowGameBoard(gameBoard);
+            GameBoard gameBoard = i_PlayGame.GameBoard;
+            UserInterface.ShowGameBoard(gameBoard);
             Player winningPlayer, losingPlayer;
-            while (!playGame.IsGameOver(out winningPlayer, out losingPlayer))
+            while (!i_PlayGame.IsGameOver(out winningPlayer, out losingPlayer))
             {
-                Player currentPlayer = playGame.WhosTurnIsIt();  // player that is now playing
+                Player currentPlayer = i_PlayGame.WhosTurnIsIt();  // player that is now playing
                 BoardCoordinates[] nextMovesCoordinates = new BoardCoordinates[2];  // The coordinates of the cards chosen by the player during the current turn
                 if (!currentPlayer.IsComputer)
                 {
-                    nextMovesCoordinates[0] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer);
+                    nextMovesCoordinates[0] = UserInterface.GetAndCheckCoordinatesInput(i_PlayGame, currentPlayer);
                     gameBoard.ExposeCard(nextMovesCoordinates[0]);
-                    UI.ShowGameBoard(gameBoard);
-                    nextMovesCoordinates[1] = UI.GetAndCheckCoordinatesInput(playGame, currentPlayer);
-                    UI.ShowGameBoard(gameBoard);
+                    UserInterface.ShowGameBoard(gameBoard);
+                    nextMovesCoordinates[1] = UserInterface.GetAndCheckCoordinatesInput(i_PlayGame, currentPlayer);
+                    UserInterface.ShowGameBoard(gameBoard);
                 }
                 else
                 {
-                    nextMovesCoordinates = playGame.ComputerAI.GetCoordinatesForNextMove(gameBoard);
-                    UI.ShowComputerIsPlaying();
+                    nextMovesCoordinates = i_PlayGame.ComputerAiForComputerPlay.GetCoordinatesForNextMove(gameBoard);
+                    UserInterface.ShowComputerIsPlaying();
                     gameBoard.ExposeCard(nextMovesCoordinates[0]);
-                    UI.ShowGameBoard(gameBoard, 1000);
+                    UserInterface.ShowGameBoard(gameBoard, 1000);
                 }
 
-                if (playGame.MultiplayerMode != MultiplayerModes.off)
+                if (i_PlayGame.MultiplayerMode != eMultiplayerModes.Off)
                 {
-                    playGame.ComputerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                    playGame.ComputerAI.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                    i_PlayGame.ComputerAiForComputerPlay.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                    i_PlayGame.ComputerAiForComputerPlay.SaveToMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
                 }
 
-                if (playGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]))
+                if (i_PlayGame.GuessCardAndUpdateScores(nextMovesCoordinates[1]))
                 {
-                    UI.ShowGameBoard(gameBoard);
-                    if (playGame.MultiplayerMode != MultiplayerModes.off)
+                    UserInterface.ShowGameBoard(gameBoard);
+                    if (i_PlayGame.MultiplayerMode != eMultiplayerModes.Off)
                     {
-                        playGame.ComputerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
-                        playGame.ComputerAI.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
+                        i_PlayGame.ComputerAiForComputerPlay.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[0]));
+                        i_PlayGame.ComputerAiForComputerPlay.RemoveFromMemory(gameBoard.GetCardByCoordinates(nextMovesCoordinates[1]));
                     }
                 }
                 else
                 {
-                    UI.ShowGameBoard(gameBoard, 2000);
+                    UserInterface.ShowGameBoard(gameBoard, 2000);
                     gameBoard.EraseLastMoveFromBoard(nextMovesCoordinates[1]);
-                    UI.ShowGameBoard(gameBoard);
+                    UserInterface.ShowGameBoard(gameBoard);
                 }
             }
              
-            if (UI.EndGameAndCheckForRematch(losingPlayer, winningPlayer, winningPlayer == null))
+            if (UserInterface.EndGameAndCheckForRematch(losingPlayer, winningPlayer, winningPlayer == null))
             {
-                Game newGame = new Game(gameBoard.GetHeightOfBoard(), gameBoard.GetLengthOfBoard(), playGame.MultiplayerMode, playGame.Player1.Name, playGame.Player2.Name);
+                Game newGame = new Game(gameBoard.GetHeightOfBoard(), gameBoard.GetLengthOfBoard(), i_PlayGame.MultiplayerMode, i_PlayGame.Player1.Name, i_PlayGame.Player2.Name);
                 startGame(newGame);
             }
             else
             {
-                UI.ExitGame();
+                UserInterface.ExitGame();
             }
         }
     }

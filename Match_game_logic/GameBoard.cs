@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Text;
 
 namespace Match_game_logic
 {
     public class GameBoard
     {
-        private Card[,] m_GameBoard;
-        private int m_numberOfExposedPairs;
+        private readonly Card[,] r_GameBoard;
+        private int m_NumberOfExposedPairs;
         private Card m_CardTemporaryTemporaryExposedByPlayer;
 
         public GameBoard(int i_NumberOfRows, int i_NumberOfColumns)
         {
-            this.m_numberOfExposedPairs = 0;
+            this.m_NumberOfExposedPairs = 0;
             this.m_CardTemporaryTemporaryExposedByPlayer = null;
-            this.m_GameBoard = new Card[i_NumberOfRows, i_NumberOfColumns];
+            this.r_GameBoard = new Card[i_NumberOfRows, i_NumberOfColumns];
             this.initGameBoard();
         }
 
@@ -21,62 +20,49 @@ namespace Match_game_logic
         {
             get
             {
-                return this.m_numberOfExposedPairs;
+                return this.m_NumberOfExposedPairs;
             }
 
             set
             {
-                this.m_numberOfExposedPairs = value;
+                this.m_NumberOfExposedPairs = value;
             }
         }
         
-        public Card CardTemporaryExposedByPlayer
-        {
-            get
-            {
-                return this.m_CardTemporaryTemporaryExposedByPlayer;
-            }
-
-            set
-            {
-                this.m_CardTemporaryTemporaryExposedByPlayer = value;
-            }
-        } 
-        
         public int GetLengthOfBoard()
         {
-            return this.m_GameBoard.GetLength(1);
+            return this.r_GameBoard.GetLength(1);
         }
 
         public int GetHeightOfBoard()
         {
-            return this.m_GameBoard.GetLength(0);
+            return this.r_GameBoard.GetLength(0);
         } 
         
         public Card GetCardByCoordinates(BoardCoordinates i_CardCoordinates)
         {
-            return this.m_GameBoard[i_CardCoordinates.Row, i_CardCoordinates.Column];
+            return this.r_GameBoard[i_CardCoordinates.Row, i_CardCoordinates.Column];
         } 
         
-        public bool IsCardExposed(BoardCoordinates i_boardCoordinates)
+        public bool IsCardExposed(BoardCoordinates i_BoardCoordinates)
         {
-            return this.GetCardByCoordinates(i_boardCoordinates).Exposed;
+            return this.GetCardByCoordinates(i_BoardCoordinates).Exposed;
         } 
         
-        public void ExposeCard(BoardCoordinates i_boardCoordinates)
+        public void ExposeCard(BoardCoordinates i_BoardCoordinates)
         { 
-            this.m_CardTemporaryTemporaryExposedByPlayer = this.m_GameBoard[i_boardCoordinates.Row, i_boardCoordinates.Column];
+            this.m_CardTemporaryTemporaryExposedByPlayer = this.r_GameBoard[i_BoardCoordinates.Row, i_BoardCoordinates.Column];
             this.m_CardTemporaryTemporaryExposedByPlayer.Exposed = true;
         }
 
-        public bool GuessCard(BoardCoordinates i_boardCoordinates)
+        public bool GuessCard(BoardCoordinates i_BoardCoordinates)
         {
             bool guessWasCorrect = false;
-            Card guessedCard = this.GetCardByCoordinates(i_boardCoordinates);
+            Card guessedCard = this.GetCardByCoordinates(i_BoardCoordinates);
             guessedCard.Exposed = true;
             if (this.m_CardTemporaryTemporaryExposedByPlayer.Letter == guessedCard.Letter)
             {
-                this.m_numberOfExposedPairs += 1;
+                this.m_NumberOfExposedPairs += 1;
                 guessWasCorrect = true;
             }
 
@@ -85,8 +71,8 @@ namespace Match_game_logic
 
         public void EraseLastMoveFromBoard(BoardCoordinates i_GuessedCardCoordinates)
         {
-            Card wronglyGueesedCard = this.GetCardByCoordinates(i_GuessedCardCoordinates);
-            wronglyGueesedCard.Exposed = false;
+            Card wronglyGuessedCard = this.GetCardByCoordinates(i_GuessedCardCoordinates);
+            wronglyGuessedCard.Exposed = false;
             this.m_CardTemporaryTemporaryExposedByPlayer.Exposed = false;
         } 
         
@@ -122,7 +108,7 @@ namespace Match_game_logic
             {
                 for (int j = 0; j < lengthOfBoard; j++)
                 {
-                    this.m_GameBoard[i, j] = new Card(cardsPossibleLetters[(i * lengthOfBoard) + j], new BoardCoordinates(i, j));
+                    this.r_GameBoard[i, j] = new Card(cardsPossibleLetters[(i * lengthOfBoard) + j], new BoardCoordinates(i, j));
                 }
             }
         }

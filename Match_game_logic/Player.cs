@@ -2,17 +2,17 @@
 {
     public class Player
     {
-        private readonly string m_Name;
-        private readonly bool m_IsComputer;
-        private bool m_isMyTurn;
+        private readonly string r_Name;
+        private readonly bool r_IsComputer;
+        private bool m_IsMyTurn;
         private int m_Score; 
         
         public Player(string i_Name, bool i_IsComputer, bool i_IsMyTurn)
         {
-            this.m_Name = i_Name;
+            this.r_Name = i_Name;
             this.m_Score = 0;
-            this.m_IsComputer = i_IsComputer;
-            this.m_isMyTurn = i_IsMyTurn;
+            this.r_IsComputer = i_IsComputer;
+            this.m_IsMyTurn = i_IsMyTurn;
         }
 
         public int Score
@@ -32,7 +32,7 @@
         {
             get
             {
-                return this.m_Name;
+                return this.r_Name;
             }
         }
 
@@ -40,12 +40,12 @@
         {
             get
             {
-                return this.m_isMyTurn;
+                return this.m_IsMyTurn;
             }
 
             set
             {
-                this.m_isMyTurn = value;
+                this.m_IsMyTurn = value;
             }
         }
 
@@ -53,7 +53,7 @@
         {
             get
             {
-                return this.m_IsComputer;
+                return this.r_IsComputer;
             }
         }
     }
