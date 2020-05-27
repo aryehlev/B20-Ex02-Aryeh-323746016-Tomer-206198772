@@ -68,8 +68,14 @@ namespace Match_game_logic
 
             if (this.r_MultiplayerMode == eMultiplayerModes.Genius)
             {
+                bool found = false;
                 foreach (BoardCoordinates boardCoordinates1 in this.r_Memory)
                 {
+                    if (found)
+                    {
+                        break;
+                    }
+
                     foreach (BoardCoordinates boardCoordinates2 in this.r_Memory)
                     {
                         if (i_GameBoard.GetCardByCoordinates(boardCoordinates1).Letter == i_GameBoard.GetCardByCoordinates(boardCoordinates2).Letter && 
@@ -77,6 +83,8 @@ namespace Match_game_logic
                         {
                             secondChoiceBoardCoordinates = boardCoordinates2;
                             firstChoiceBoardCoordinates = boardCoordinates1;
+                            found = true;
+                            break;
                         }
                     }
                 }

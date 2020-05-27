@@ -1,0 +1,10 @@
+==========================Exercise Checking Report==========================
+Exercise No...........: 2
+First Student Details.: 323746016 - Aryeh Klein
+Second Student Details: 206198772 - Tomer Ben Gigi
+Delivery Date.........: 27 - May - 2020
+Delivered In Delay....: No
+Delay Reason..........: 
+Visual Studio Version.: 2019
+Comments..............: We implemented Ai with three different difficulty modes
+=======================End Exercise Checking Report=========================
