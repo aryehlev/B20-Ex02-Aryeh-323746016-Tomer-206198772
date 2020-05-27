@@ -41,6 +41,7 @@
         {
             BoardCoordinates newBoardCoordinates = new BoardCoordinates();
             o_WasSuccess = false;
+            
             if (char.IsUpper(i_Placement[0]) && char.IsDigit(i_Placement[1]) && i_Placement[1] != '0')
             {
                 newBoardCoordinates = new BoardCoordinates(i_Placement[1] - '0' - 1, i_Placement[0] - 'A');

@@ -60,6 +60,7 @@ namespace Match_game_logic
             bool guessWasCorrect = false;
             Card guessedCard = this.GetCardByCoordinates(i_BoardCoordinates);
             guessedCard.Exposed = true;
+           
             if (this.m_CardTemporaryTemporaryExposedByPlayer.Letter == guessedCard.Letter)
             {
                 this.m_NumberOfExposedPairs += 1;
@@ -88,6 +89,7 @@ namespace Match_game_logic
             int numberOfPairs = lengthOfBoard * heightOfBoard / 2;
             char[] cardsPossibleLetters = new char[numberOfPairs * 2];
             char nextLetter = 'A';
+            
             for (int i = 0; i < numberOfPairs; i++)
             {
                 cardsPossibleLetters[i * 2] = nextLetter;
@@ -96,6 +98,7 @@ namespace Match_game_logic
             }
 
             Random rnd = new Random();
+           
             for (int i = cardsPossibleLetters.Length - 1; i >= 0; i--)
             {
                 char currentLetter = cardsPossibleLetters[i];
@@ -108,7 +111,7 @@ namespace Match_game_logic
             {
                 for (int j = 0; j < lengthOfBoard; j++)
                 {
-                    this.r_GameBoard[i, j] = new Card(cardsPossibleLetters[(i * lengthOfBoard) + j], new BoardCoordinates(i, j));
+                    this.r_GameBoard[i, j] = new Card(cardsPossibleLetters[(i * lengthOfBoard) + j]);
                 }
             }
         }

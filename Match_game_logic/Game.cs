@@ -20,6 +20,7 @@
             this.m_Player2 = new Player(i_NameOfPlayer2, i_MultiPlayerMode != eMultiplayerModes.Off, false);
             this.r_MultiPlayerMode = i_MultiPlayerMode;
             this.r_ComputerAi = null;
+            
             if (i_MultiPlayerMode != eMultiplayerModes.Off)
             {
                 this.r_ComputerAi = new AiForComputerPlay(i_MultiPlayerMode);
@@ -84,6 +85,7 @@
         public bool GuessCardAndUpdateScores(BoardCoordinates i_BoardCoordinates)
         {
             bool wasSuccsesfulGuess = this.r_GameBoard.GuessCard(i_BoardCoordinates);
+            
             if (wasSuccsesfulGuess)
             {
                 if (this.Player1.IsMyTurn)
@@ -109,6 +111,7 @@
             bool isGameOver = false;
             o_WinningPlayer = null;
             o_LosingPlayer = null;
+            
             if (this.r_GameBoard.IsBoardFullyExposed())
             {
                 isGameOver = true;

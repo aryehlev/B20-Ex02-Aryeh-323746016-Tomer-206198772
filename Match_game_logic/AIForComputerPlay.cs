@@ -18,13 +18,13 @@ namespace Match_game_logic
         private readonly List<BoardCoordinates> r_Memory;
         private readonly int r_MemoryDepth;
         private readonly eMultiplayerModes r_MultiplayerMode;
-        public const int k_EasyMemory = 2;
         public const int k_MediumMemory = 4;
         
         public AiForComputerPlay(eMultiplayerModes i_MultiplayerMode)
         {
             this.r_MultiplayerMode = i_MultiplayerMode;
             this.r_Memory = new List<BoardCoordinates>();
+            
             switch (this.r_MultiplayerMode)
             {
                 case eMultiplayerModes.Easy:
@@ -44,11 +44,12 @@ namespace Match_game_logic
             List<BoardCoordinates> possibleBoardCoordinateses = new List<BoardCoordinates>();
             int heightOfBoard = i_GameBoard.GetHeightOfBoard();
             int lengthOfBoard = i_GameBoard.GetLengthOfBoard();
+            
             for (int i = 0; i < heightOfBoard; i++)
             {
                 for (int j = 0; j < lengthOfBoard; j++)
                 {
-                    BoardCoordinates currentBoardCoordinates= new BoardCoordinates(i,j);
+                    BoardCoordinates currentBoardCoordinates = new BoardCoordinates(i, j);
 
                     if (!i_GameBoard.IsCardExposed(currentBoardCoordinates))
                     {
@@ -72,7 +73,7 @@ namespace Match_game_logic
                     foreach (BoardCoordinates boardCoordinates2 in this.r_Memory)
                     {
                         if (i_GameBoard.GetCardByCoordinates(boardCoordinates1).Letter == i_GameBoard.GetCardByCoordinates(boardCoordinates2).Letter && 
-                            boardCoordinates1.Column != boardCoordinates2.Column && boardCoordinates1.Row!= boardCoordinates2.Row)
+                            boardCoordinates1.Column != boardCoordinates2.Column && boardCoordinates1.Row != boardCoordinates2.Row)
                         {
                             secondChoiceBoardCoordinates = boardCoordinates2;
                             firstChoiceBoardCoordinates = boardCoordinates1;
@@ -100,7 +101,7 @@ namespace Match_game_logic
             }
 
             this.r_Memory.Remove(secondChoiceBoardCoordinates);
-            return new BoardCoordinates[] { firstChoiceBoardCoordinates , secondChoiceBoardCoordinates };
+            return new[] { firstChoiceBoardCoordinates, secondChoiceBoardCoordinates };
         }
 
         public void SaveToMemory(BoardCoordinates i_BoardCoordinates)
