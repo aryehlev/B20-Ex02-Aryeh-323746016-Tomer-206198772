@@ -4,14 +4,14 @@ using Match_game_logic;
 
 namespace Match_game_UI
 {
-    public class UserInterface
+    public class mofo
     {
-        public static eMultiplayerModes GetAndCheckMultiPlayerMode()
+        public static eAiModes GetAndCheckMultiPlayerMode()
         {
             Console.WriteLine("Hi, welcome to the Matching game!\npress 1 if you would like to play against the Computer and 2 if you would like to play two players");
-            eMultiplayerModes mode = eMultiplayerModes.Off;
+            eAiModes mode = eAiModes.Off;
             string inputFromUser = Console.ReadLine();
-            
+
             while (inputFromUser != "1" && inputFromUser != "2")
             {
                 Console.WriteLine("please enter either 1 or 2");
@@ -32,16 +32,16 @@ namespace Match_game_UI
             switch (inputFromUser)
             {
                 case "r":
-                    mode = eMultiplayerModes.Random;
+                    mode = eAiModes.Random;
                     break;
                 case "e":
-                    mode = eMultiplayerModes.Easy;
+                    mode = eAiModes.Easy;
                     break;
                 case "n":
-                    mode = eMultiplayerModes.Easy;
+                    mode = eAiModes.Easy;
                     break;
                 case "g":
-                    mode = eMultiplayerModes.Genius;
+                    mode = eAiModes.Genius;
                     break;
             }
 
@@ -53,7 +53,7 @@ namespace Match_game_UI
             Console.WriteLine("please enter desired Height of board  4, 5 or 6");
             string inputFromUserStr = Console.ReadLine();
             int[] lengthAndHeight = new int[2];
-            
+
             while ((inputFromUserStr == null) || (inputFromUserStr != "4" && inputFromUserStr != "5" && inputFromUserStr != "6"))
             {
                 Console.WriteLine("please enter either 4, 5 or 6");
@@ -62,17 +62,17 @@ namespace Match_game_UI
 
             lengthAndHeight[0] = int.Parse(inputFromUserStr);
 
-            if(lengthAndHeight[0] == 5)
+            if (lengthAndHeight[0] == 5)
             {
                 Console.WriteLine("please enter desired Length of board either 4, or 6");
                 inputFromUserStr = Console.ReadLine();
-                
+
                 while (inputFromUserStr == null || (inputFromUserStr != "4" && inputFromUserStr != "6"))
                 {
                     Console.WriteLine("please enter either 4 or 6");
                     inputFromUserStr = Console.ReadLine();
                 }
-               
+
                 lengthAndHeight[1] = int.Parse(inputFromUserStr);
             }
             else
@@ -103,13 +103,13 @@ namespace Match_game_UI
             Console.Out.WriteLine("Now it's the computer's turn to play");
             System.Threading.Thread.Sleep(3000);
         }
-        
+
         public static BoardCoordinates GetAndCheckCoordinatesInput(Game i_CurrGame, Player i_CurrentPlayer)
         {
             Console.WriteLine($"{i_CurrentPlayer.Name}, you currently have {i_CurrentPlayer.Score} pairs. please choose next coordinates");
             BoardCoordinates coordinatesFromUser = new BoardCoordinates();
             bool isInputValid = false;
-            
+
             while (!isInputValid)
             {
                 string inputFromUser = Console.ReadLine();
@@ -176,7 +176,7 @@ namespace Match_game_UI
 
             Console.WriteLine("Rematch? (Y / N)");
             string inputFromUser = Console.ReadLine();
-            
+
             while (inputFromUser != "Y" && inputFromUser != "N")
             {
                 Console.WriteLine("I didn't Understand, Would you like to play another game, press Y if you do and N if you don't");
@@ -199,7 +199,7 @@ namespace Match_game_UI
             int lengthOfBoard = i_GameBoard.GetLengthOfBoard();
             StringBuilder strToReturn = new StringBuilder(" ");
             char columnIndexChar = 'A';
-            
+
             for (int i = 0; i < lengthOfBoard; i++)
             {
                 strToReturn.Append($"     {columnIndexChar}");

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Match_game_logic
 { 
-    public enum eMultiplayerModes
+    public enum eAiModes
     {
         Off,
         Random,
@@ -17,20 +17,20 @@ namespace Match_game_logic
     {
         private readonly List<BoardCoordinates> r_Memory;
         private readonly int r_MemoryDepth;
-        private readonly eMultiplayerModes r_MultiplayerMode;
+        private readonly eAiModes r_AiMode;
         public const int k_MediumMemory = 4;
         
-        public AiForComputerPlay(eMultiplayerModes i_MultiplayerMode)
+        public AiForComputerPlay(eAiModes i_AiMode)
         {
-            this.r_MultiplayerMode = i_MultiplayerMode;
+            this.r_AiMode = i_AiMode;
             this.r_Memory = new List<BoardCoordinates>();
             
-            switch (this.r_MultiplayerMode)
+            switch (this.r_AiMode)
             {
-                case eMultiplayerModes.Easy:
+                case eAiModes.Easy:
                     this.r_MemoryDepth = k_MediumMemory;
                     break;
-                case eMultiplayerModes.Normal:
+                case eAiModes.Normal:
                     this.r_MemoryDepth = int.MaxValue;
                     break;
                 default:
@@ -66,7 +66,7 @@ namespace Match_game_logic
             BoardCoordinates secondChoiceBoardCoordinates = possibleBoardCoordinateses.ElementAt(secondCardIdx);
             this.r_Memory.Remove(firstChoiceBoardCoordinates);
 
-            if (this.r_MultiplayerMode == eMultiplayerModes.Genius)
+            if (this.r_AiMode == eAiModes.Genius)
             {
                 bool found = false;
                 foreach (BoardCoordinates boardCoordinates1 in this.r_Memory)
@@ -89,7 +89,7 @@ namespace Match_game_logic
                     }
                 }
             }
-            else if (this.r_MultiplayerMode != eMultiplayerModes.Random && this.r_Memory.Any())
+            else if (this.r_AiMode != eAiModes.Random && this.r_Memory.Any())
             {
                 int cardsCheckedForMatch = 0;
                 foreach (BoardCoordinates boardCoordinates in this.r_Memory)

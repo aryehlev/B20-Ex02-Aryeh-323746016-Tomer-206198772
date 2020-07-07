@@ -3,7 +3,7 @@
     public class Game
     {
         private readonly GameBoard r_GameBoard;
-        private readonly eMultiplayerModes r_MultiPlayerMode;
+        private readonly eAiModes r_AiMode;
         private readonly AiForComputerPlay r_ComputerAi;
         private Player m_Player1;
         private Player m_Player2; 
@@ -11,19 +11,19 @@
         public Game(
             int i_NumberOfRows,
             int i_NumberOfColumns,
-            eMultiplayerModes i_MultiPlayerMode,
+            eAiModes i_AiMode,
             string i_NameOfPlayer1,
             string i_NameOfPlayer2 = "Computer")
         {
             this.r_GameBoard = new GameBoard(i_NumberOfRows, i_NumberOfColumns);
             this.m_Player1 = new Player(i_NameOfPlayer1, false, true);
-            this.m_Player2 = new Player(i_NameOfPlayer2, i_MultiPlayerMode != eMultiplayerModes.Off, false);
-            this.r_MultiPlayerMode = i_MultiPlayerMode;
+            this.m_Player2 = new Player(i_NameOfPlayer2, i_AiMode != eAiModes.Off, false);
+            this.r_AiMode = i_AiMode;
             this.r_ComputerAi = null;
             
-            if (i_MultiPlayerMode != eMultiplayerModes.Off)
+            if (i_AiMode != eAiModes.Off)
             {
-                this.r_ComputerAi = new AiForComputerPlay(i_MultiPlayerMode);
+                this.r_ComputerAi = new AiForComputerPlay(i_AiMode);
             }
         } 
         
@@ -61,11 +61,11 @@
             }
         }
 
-        public eMultiplayerModes MultiplayerMode
+        public eAiModes AiMode
         {
             get
             {
-                return this.r_MultiPlayerMode;
+                return this.r_AiMode;
             }
         }
 

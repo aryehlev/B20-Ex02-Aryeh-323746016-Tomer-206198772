@@ -3,13 +3,14 @@
     public class Card
     {
         private char m_Letter;
-        private bool m_Exposed; 
+        private bool m_Exposed;
         
         public Card(char i_Letter)
         {
             this.m_Letter = i_Letter;
             this.m_Exposed = false;
         }
+
 
         public bool Exposed
         {
