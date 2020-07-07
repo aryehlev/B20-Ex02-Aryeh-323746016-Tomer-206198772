@@ -8,11 +8,13 @@ namespace Match_game_UI
     {
         private Card m_ButtonCard;
         private Image m_ImageToShow;
+        private bool m_showingImage;
 
         public CardButton(Card i_Card, Image i_ImageToShow)
         {
             m_ButtonCard = i_Card;
             m_ImageToShow = i_ImageToShow;
+            m_showingImage = false;
         }
 
         internal Card ButtonCard
@@ -29,6 +31,26 @@ namespace Match_game_UI
             {
                 return m_ImageToShow;
             }
+        }
+
+        internal bool ShowingImage
+        {
+            get
+            {
+                return m_showingImage;
+            }
+        }
+
+        internal void ShowImageOnButton()
+        {
+            this.Image = m_ImageToShow;
+            m_showingImage = true;
+        }
+
+        internal void HideImageOnButton()
+        {
+            this.Image = null;
+            m_showingImage = false;
         }
     }
 }

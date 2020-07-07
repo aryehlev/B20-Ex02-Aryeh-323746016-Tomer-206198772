@@ -114,7 +114,14 @@ namespace Match_game_UI
 
         private void m_CardButton_Click(object sender, EventArgs e)
         {
-            (sender as CardButton).Image = (sender as CardButton).ImageToShow;
+            if(!(sender as CardButton).ShowingImage)
+            {
+                (sender as CardButton).ShowImageOnButton();
+            }
+            else
+            {
+                (sender as CardButton).HideImageOnButton();
+            }
             //BoardCoordinates cardCoordinates = new BoardCoordinates(i, j);
             //Card card = m_GameToPlay.GameBoard.GetCardByCoordinates(cardCoordinates);
             //this.Text = (sender as CardButton)?.ButtonCard.Letter.ToString();
