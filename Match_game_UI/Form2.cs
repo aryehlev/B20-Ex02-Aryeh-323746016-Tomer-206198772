@@ -28,6 +28,10 @@ namespace Match_game_UI
             m_CurrentPlayerLabel = new Label();
             m_Player1ScoreLabel = new Label();
             m_Player2ScoreLabel = new Label();
+
+            WebClient wc = new WebClient();
+            Dictionary<char, Image> imagesByLetters = new Dictionary<char, Image>();
+
             this.SuspendLayout();
             // 
             // m_CurrentPlayerLabel
@@ -63,9 +67,6 @@ namespace Match_game_UI
             {
                 m_TableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100 / heightOfBoard));
             }
-
-            WebClient wc = new WebClient();
-            Dictionary<char, Image> imagesByLetters = new Dictionary<char, Image>();
 
             for (int i = 0; i < heightOfBoard; i++)
             {
