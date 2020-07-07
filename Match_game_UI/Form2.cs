@@ -15,10 +15,12 @@ namespace Match_game_UI
         private Label m_Player1ScoreLabel;
         private Label m_Player2ScoreLabel;
         private Game m_GameToPlay;
+        private GameBoard m_GameBoard;
 
         public Form2(Game i_GameToPlay)
         {
             m_GameToPlay = i_GameToPlay;
+            m_GameBoard = m_GameToPlay.GameBoard;
             InitializeComponent();
         }
 
@@ -28,9 +30,6 @@ namespace Match_game_UI
             m_CurrentPlayerLabel = new Label();
             m_Player1ScoreLabel = new Label();
             m_Player2ScoreLabel = new Label();
-
-            WebClient wc = new WebClient();
-            Dictionary<char, Image> imagesByLetters = new Dictionary<char, Image>();
 
             this.SuspendLayout();
             // 
@@ -54,8 +53,24 @@ namespace Match_game_UI
             // 
             // m_TableLayoutPanel
             // 
-            int heightOfBoard = m_GameToPlay.GameBoard.GetHeightOfBoard();
-            int lengthOfBoard = m_GameToPlay.GameBoard.GetLengthOfBoard();
+            InitializeTableLayoutPanel();
+            
+            this.Controls.Add(m_TableLayoutPanel);
+            this.Width = 700;
+            this.Height = 700;
+            this.Name = "Form2";
+
+            this.ResumeLayout(false);
+        }
+
+        private void InitializeTableLayoutPanel()
+        {
+            WebClient wc = new WebClient();
+            Dictionary<char, Image> imagesByLetters = new Dictionary<char, Image>();
+            int heightOfBoard = m_GameBoard.GetHeightOfBoard();
+            int lengthOfBoard = m_GameBoard.GetLengthOfBoard();
+
+            m_TableLayoutPanel.Dock = DockStyle.Fill;
             m_TableLayoutPanel.ColumnCount = lengthOfBoard;
             m_TableLayoutPanel.RowCount = heightOfBoard;
 
@@ -63,6 +78,7 @@ namespace Match_game_UI
             {
                 m_TableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100 / lengthOfBoard));
             }
+
             for (int i = 0; i < heightOfBoard; i++)
             {
                 m_TableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100 / heightOfBoard));
@@ -72,7 +88,7 @@ namespace Match_game_UI
             {
                 for (int j = 0; j < lengthOfBoard; j++)
                 {
-                    Card card = m_GameToPlay.GameBoard.GetCardByCoordinates(new BoardCoordinates(i, j));
+                    Card card = m_GameBoard.GetCardByCoordinates(new BoardCoordinates(i, j));
                     CardButton button = null;
                     if (imagesByLetters.ContainsKey(card.Letter))
                     {
@@ -94,33 +110,32 @@ namespace Match_game_UI
                 }
             }
 
+            addLabelsToTableLayoutPanel();
+        }
+
+        private void addLabelsToTableLayoutPanel()
+        {
             m_TableLayoutPanel.Controls.Add(m_CurrentPlayerLabel);
-            m_TableLayoutPanel.SetColumnSpan(m_CurrentPlayerLabel, lengthOfBoard);
+            m_TableLayoutPanel.SetColumnSpan(m_CurrentPlayerLabel, m_TableLayoutPanel.ColumnCount);
 
             m_TableLayoutPanel.Controls.Add(m_Player1ScoreLabel);
-            m_TableLayoutPanel.SetColumnSpan(m_Player1ScoreLabel, lengthOfBoard);
+            m_TableLayoutPanel.SetColumnSpan(m_Player1ScoreLabel, m_TableLayoutPanel.ColumnCount);
 
             m_TableLayoutPanel.Controls.Add(m_Player2ScoreLabel);
-            m_TableLayoutPanel.SetColumnSpan(m_Player2ScoreLabel, lengthOfBoard);
-
-            m_TableLayoutPanel.Dock = DockStyle.Fill;
-            this.Controls.Add(m_TableLayoutPanel);
-            this.Width = 700;
-            this.Height = 700;
-            this.Name = "Form2";
-
-            this.ResumeLayout(false);
+            m_TableLayoutPanel.SetColumnSpan(m_Player2ScoreLabel, m_TableLayoutPanel.ColumnCount);
         }
 
         private void m_CardButton_Click(object sender, EventArgs e)
         {
+            string[] nameSplit = (sender as CardButton).Name.Split('_');
+            BoardCoordinates boardCoordinates = new BoardCoordinates(int.Parse(nameSplit[1]), int.Parse(nameSplit[2]));
             if(!(sender as CardButton).ShowingImage)
             {
-                (sender as CardButton).ShowImageOnButton();
+                (sender as CardButton)?.ShowImageOnButton();
             }
             else
             {
-                (sender as CardButton).HideImageOnButton();
+                (sender as CardButton)?.HideImageOnButton();
             }
             //BoardCoordinates cardCoordinates = new BoardCoordinates(i, j);
             //Card card = m_GameToPlay.GameBoard.GetCardByCoordinates(cardCoordinates);

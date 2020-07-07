@@ -6,12 +6,12 @@ namespace Match_game_logic
     {
         private readonly Card[,] r_GameBoard;
         private int m_NumberOfExposedPairs;
-        private Card m_CardTemporaryTemporaryExposedByPlayer;
+        private Card m_CardTemporaryExposedByPlayer;
 
         public GameBoard(int i_NumberOfRows, int i_NumberOfColumns)
         {
             this.m_NumberOfExposedPairs = 0;
-            this.m_CardTemporaryTemporaryExposedByPlayer = null;
+            this.m_CardTemporaryExposedByPlayer = null;
             this.r_GameBoard = new Card[i_NumberOfRows, i_NumberOfColumns];
             this.initGameBoard();
         }
@@ -51,8 +51,8 @@ namespace Match_game_logic
         
         public void ExposeCard(BoardCoordinates i_BoardCoordinates)
         { 
-            this.m_CardTemporaryTemporaryExposedByPlayer = this.r_GameBoard[i_BoardCoordinates.Row, i_BoardCoordinates.Column];
-            this.m_CardTemporaryTemporaryExposedByPlayer.Exposed = true;
+            this.m_CardTemporaryExposedByPlayer = this.r_GameBoard[i_BoardCoordinates.Row, i_BoardCoordinates.Column];
+            this.m_CardTemporaryExposedByPlayer.Exposed = true;
         }
 
         public bool GuessCard(BoardCoordinates i_BoardCoordinates)
@@ -61,7 +61,7 @@ namespace Match_game_logic
             Card guessedCard = this.GetCardByCoordinates(i_BoardCoordinates);
             guessedCard.Exposed = true;
            
-            if (this.m_CardTemporaryTemporaryExposedByPlayer.Letter == guessedCard.Letter)
+            if (this.m_CardTemporaryExposedByPlayer.Letter == guessedCard.Letter)
             {
                 this.m_NumberOfExposedPairs += 1;
                 guessWasCorrect = true;
@@ -74,7 +74,7 @@ namespace Match_game_logic
         {
             Card wronglyGuessedCard = this.GetCardByCoordinates(i_GuessedCardCoordinates);
             wronglyGuessedCard.Exposed = false;
-            this.m_CardTemporaryTemporaryExposedByPlayer.Exposed = false;
+            this.m_CardTemporaryExposedByPlayer.Exposed = false;
         } 
         
         public bool IsBoardFullyExposed()
